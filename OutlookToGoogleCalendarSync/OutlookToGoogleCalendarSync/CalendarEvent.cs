@@ -19,18 +19,24 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public CalendarEvent(string id, DateTime startDate, DateTime endDate, string location, string subject, string body)
         {
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.location = location;
-            this.subject = subject;
-            this.body = body;
-            this.id = id;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+            this.Location = location;
+            this.Subject = subject;
+            this.Body = body;
+            this.Id = id;
         }
 
         public string Id
         {
             get { return id; }
-            set { id = value; }
+            set 
+            { 
+                id = value;
+                //Remove invalid id characters
+                id = id.Replace("/", "");
+                id = id.Replace("+", "");
+            }
         }
 
         public string Body
