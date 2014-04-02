@@ -8,13 +8,17 @@ namespace OutlookToGoogleCalendarSync
     internal class Program
     {
         private static string user, pass, calendarId;
+        private static string exchangeuser, exchangepassword;
 
         private static void Main(string[] args)
         {
             ReadConfig();
 
             CalendarManagerGoogle gManager = new CalendarManagerGoogle(user, pass, calendarId);
-            List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
+            
+            //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
+            List<CalendarEvent> events = CalendarManagerExchange.GetAllEvents(exchangeuser, exchangepassword);
+
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
             List<CalendarEvent> eventsProcessed = new List<CalendarEvent>();
 
@@ -67,6 +71,8 @@ namespace OutlookToGoogleCalendarSync
 
             user = ConfigurationManager.AppSettings["email"];
             pass = ConfigurationManager.AppSettings["pass"];
+            exchangeuser = ConfigurationManager.AppSettings["exchangeuser"];
+            exchangepassword = ConfigurationManager.AppSettings["exchangepassword"];
             calendarId = ConfigurationManager.AppSettings["calendarId"];
         }
     }
