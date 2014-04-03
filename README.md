@@ -9,9 +9,8 @@ Prerequisites
 Installing the following is a must to get the program to run:
 
 * Google Data API for .NET: https://code.google.com/p/google-gdata/downloads/list
-* The Microsoft Office 2010 Primary Interop Assemblies (PIA): https://www.microsoft.com/en-us/download/details.aspx?id=3508
-
-If you use another version of office, you should install the appropriate PIA for that version and change the assembly reference.
+* The Microsoft Office 2010 Primary Interop Assemblies (PIA): https://www.microsoft.com/en-us/download/details.aspx?id=3508 (If you use another version of office, you should install the appropriate PIA for that version and change the assembly reference.)
+* Microsoft Exchange Web Services Managed API 2.1: http://www.microsoft.com/en-us/download/details.aspx?id=42022
 
 Screenshots
 ============
@@ -28,5 +27,5 @@ In the app.config file you need to add your gmail username, password and the cal
 
 How to find the calendar?
 -------------------------
-Create a calendar in google and find the calendar ID. To find the ID go to the calendar properties and find the XML button in the section “address for this calendar”.
+Create a calendar in google and find the calendar ID. To find the ID go to the calendar properties and find the XML button in the section ï¿½address for this calendarï¿½.
 The ID you are looking for is something like this: 123456789ABCDEFG%40group.calendar.google.com
