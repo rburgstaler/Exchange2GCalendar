@@ -95,7 +95,7 @@ namespace OutlookToGoogleCalendarSync
 
             // Initialize values for the start and end times, and the number of appointments to retrieve.
             DateTime startDate = DateTime.Now.AddMonths(-6);
-            DateTime endDate = startDate.AddMonths(6);
+            DateTime endDate = DateTime.Now.AddMonths(6);
             const int NUM_APPTS = 1000;
 
             // Initialize the calendar folder object with only the folder ID. 
