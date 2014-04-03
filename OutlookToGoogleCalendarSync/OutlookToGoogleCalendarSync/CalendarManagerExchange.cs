@@ -94,15 +94,15 @@ namespace OutlookToGoogleCalendarSync
 
 
             // Initialize values for the start and end times, and the number of appointments to retrieve.
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(60);
-            const int NUM_APPTS = 500;
+            DateTime startDate = DateTime.Now.AddMonths(-6);
+            DateTime endDate = startDate.AddMonths(6);
+            const int NUM_APPTS = 1000;
 
             // Initialize the calendar folder object with only the folder ID. 
             CalendarFolder calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
 
             // Set the start and end time and number of appointments to retrieve.
-            CalendarView cView = new CalendarView(startDate.AddDays(-30), endDate, NUM_APPTS);
+            CalendarView cView = new CalendarView(startDate, endDate, NUM_APPTS);
 
             // Limit the properties returned to the appointment's subject, start time, and end time.
             cView.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End, AppointmentSchema.IsRecurring, AppointmentSchema.Id, AppointmentSchema.Location);
