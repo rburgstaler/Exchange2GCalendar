@@ -36,11 +36,14 @@ namespace OutlookToGoogleCalendarSync
         {
             get { return id; }
             set 
-            { 
+            {
                 id = NonNullTrimmed(value);
                 //Remove invalid id characters
-                id = id.Replace("/", "");
-                id = id.Replace("+", "");
+                //FYI: We must replace the invalid characters with unique strings (not "")
+                //because it was experienced that the differene between two id's can
+                //be as simple as 12abdef3+3133/ee vs. 12abdef3/3133/ee  See the difference???
+                id = id.Replace("/", "_plus_");
+                id = id.Replace("+", "_dash_");
             }
         }
 
