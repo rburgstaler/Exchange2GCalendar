@@ -66,7 +66,11 @@ namespace OutlookToGoogleCalendarSync
         public string Subject
         {
             get { return subject; }
-            set { subject = value; }
+            set 
+            {
+                //Must be trimmed in order to work in all systems
+                subject = (value != null) ? value.Trim() : value; 
+            }
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public bool Equals(CalendarEvent other)
         {
-            return (other.Id == this.id);
+            return (other.Id == this.Id);
         }
 
         /// <summary>
