@@ -32,7 +32,7 @@ namespace OutlookToGoogleCalendarSync
             get { return id; }
             set 
             { 
-                id = value;
+                id = NonNullTrimmed(value);
                 //Remove invalid id characters
                 id = id.Replace("/", "");
                 id = id.Replace("+", "");
@@ -42,7 +42,7 @@ namespace OutlookToGoogleCalendarSync
         public string Body
         {
             get { return body; }
-            set { body = value; }
+            set { body = NonNullTrimmed(value); }
         }
 
         public DateTime EndDate
@@ -54,7 +54,7 @@ namespace OutlookToGoogleCalendarSync
         public string Location
         {
             get { return location; }
-            set { location = value; }
+            set { location = NonNullTrimmed(value); }
         }
 
         public DateTime StartDate
@@ -63,14 +63,18 @@ namespace OutlookToGoogleCalendarSync
             set { startDate = value; }
         }
 
+        //Method that ensures there is a non-null trimmed string
+        //Some of the systems we are saving to trim padding
+        private String NonNullTrimmed(String AStr)
+        {
+            return (AStr == null) ? "" : AStr.Trim();
+        }
+
         public string Subject
         {
             get { return subject; }
             set 
-            {
-                //Must be trimmed in order to work in all systems
-                subject = (value != null) ? value.Trim() : value; 
-            }
+            { subject = NonNullTrimmed(value); }
         }
 
         /// <summary>
@@ -88,29 +92,18 @@ namespace OutlookToGoogleCalendarSync
         {
             if (other.Equals(this))
             {
-                string testBody = this.body;
-                string testLocation = this.location;
-                string testSubject = this.subject;
 
-                if (testBody == null)
-                    testBody = "";
-
-                if (testLocation == null)
-                    testLocation = "";
-
-                if (testSubject == null)
-                    testSubject = "";
 
                 return (
-                    other.body.Replace("\r", "").Trim('\n').Trim() != testBody.Replace("\r", "").Trim('\n').Trim()
+                    other.body.Replace("\r", "").Trim('\n').Trim() != this.Body.Replace("\r", "").Trim('\n').Trim()
                     ||
                     other.endDate != this.endDate
                     ||
-                    other.location != testLocation
+                    other.location != this.Location
                     ||
                     other.startDate != this.startDate
                     ||
-                    other.subject != testSubject
+                    other.subject != this.Subject
                     );
             }
             else
