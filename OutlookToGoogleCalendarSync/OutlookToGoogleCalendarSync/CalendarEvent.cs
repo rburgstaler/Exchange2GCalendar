@@ -27,6 +27,11 @@ namespace OutlookToGoogleCalendarSync
             this.Id = id;
         }
 
+        public String ToString()
+        {
+            return String.Format("{0} {1} {2} {3} {4} {5}", id, StartDate, EndDate, Location, Subject, Body);
+        }
+
         public string Id
         {
             get { return id; }
