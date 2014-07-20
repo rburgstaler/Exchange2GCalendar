@@ -7,6 +7,9 @@
   <appSettings>
     <add key="email" value="" />
     <add key="pass" value="" />
+    <!-- Will attempt to use exchange url.  If it fails it will try to auto-resolve using
+     the exchangeuser setting. -->
+    <add key="exchangeurl" value="" />
     <add key="exchangeuser" value="" />
     <add key="exchangepassword" value="" />
     <add key="calendarId" value="" />

@@ -92,7 +92,7 @@ namespace OutlookToGoogleCalendarSync
             return result;
         }
 
-        public static List<CalendarEvent> GetAllEvents(String user, String pass)
+        public static List<CalendarEvent> GetAllEvents(String exchangeurl, String user, String pass)
         {
             List<CalendarEvent> events = new List<CalendarEvent>();
 
@@ -104,8 +104,33 @@ namespace OutlookToGoogleCalendarSync
             service.TraceFlags = TraceFlags.All;
             service.TraceListener = new TraceListener();
 
-            service.AutodiscoverUrl(user, RedirectionUrlValidationCallback);
 
+            //When attempting to connect to EWS, it is much quicker to just use the url directly
+            //rather than using the auto-resolve.  So we will first attempt the url, if that works
+            //then we are golden otherwise we will go for the auto-resolve.
+            CalendarFolder calendar = null;
+            if (exchangeurl != "")
+            {
+                service.Url = new Uri(exchangeurl);
+
+                try
+                {
+                    // Try to initialize the calendar folder object with only the folder ID. 
+                    calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
+                }
+                catch (Exception exp)
+                {
+                    service.TraceListener.Trace("ExchangeUrlBindFail", exp.Message);
+                }
+            }
+
+            //calendar will still be null if we still have not bound correctly
+            if (calendar == null)
+            {
+                service.AutodiscoverUrl(user, RedirectionUrlValidationCallback);
+                // Try to initialize the calendar folder object with only the folder ID. 
+                calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
+            }
 
             CalendarEvent cEvent = null;
 
@@ -114,9 +139,6 @@ namespace OutlookToGoogleCalendarSync
             DateTime startDate = DateTime.Now.AddMonths(-6);
             DateTime endDate = DateTime.Now.AddMonths(6);
             const int NUM_APPTS = 1000;
-
-            // Initialize the calendar folder object with only the folder ID. 
-            CalendarFolder calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
 
             // Set the start and end time and number of appointments to retrieve.
             CalendarView cView = new CalendarView(startDate, endDate, NUM_APPTS);
