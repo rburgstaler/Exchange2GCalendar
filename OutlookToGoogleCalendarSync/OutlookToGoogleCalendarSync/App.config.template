@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Rename this file to app.config and then put in connection information as well as credentials -->
 <configuration>
   <startup>
     <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
