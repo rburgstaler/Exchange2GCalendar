@@ -145,6 +145,7 @@ namespace OutlookToGoogleCalendarSync
 
             // Limit the properties returned to the appointment's subject, start time, and end time. (Body cannot be loaded with FindAppointments, we need to do that later)
             cView.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End, AppointmentSchema.IsRecurring, AppointmentSchema.Id, AppointmentSchema.Location);
+            cView.PropertySet.RequestedBodyType = BodyType.Text;
 
             // Retrieve a collection of appointments by using the calendar view.
             FindItemsResults<Appointment> appointments = calendar.FindAppointments(cView);
