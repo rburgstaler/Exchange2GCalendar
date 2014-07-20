@@ -7,6 +7,22 @@ using Microsoft.Exchange.WebServices.Data;
 
 namespace OutlookToGoogleCalendarSync
 {
+
+    class TraceListener : ITraceListener
+    {
+        private void AddTraceLine(String AMsg)
+        {
+            Console.WriteLine(AMsg);
+
+        }
+
+        public void Trace(string traceType, string traceMessage)
+        {
+            AddTraceLine("================== " + traceType + " ==================");
+            AddTraceLine(traceMessage);
+        }
+    }
+
     public class CalendarManagerExchange
     {
 
@@ -86,6 +102,7 @@ namespace OutlookToGoogleCalendarSync
 
             service.TraceEnabled = true;
             service.TraceFlags = TraceFlags.All;
+            service.TraceListener = new TraceListener();
 
             service.AutodiscoverUrl(user, RedirectionUrlValidationCallback);
 
