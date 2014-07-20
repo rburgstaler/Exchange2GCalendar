@@ -154,7 +154,9 @@ namespace OutlookToGoogleCalendarSync
 
             foreach (Appointment a in appointments)
             {
-                cEvent = new CalendarEvent(a.Id.ToString(), a.Start, a.End, a.Location, a.Subject, "Body not available");
+                Appointment newApt = Appointment.Bind(service, a.Id);
+
+                cEvent = new CalendarEvent(a.Id.ToString(), a.Start, a.End, a.Location, a.Subject, newApt.Body);
                 events.Add(cEvent);
             }
             /*
