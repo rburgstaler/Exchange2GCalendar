@@ -50,11 +50,18 @@ namespace OutlookToGoogleCalendarSync
             }
 
             //Find all events that exist in Google that do not exist in Exchange
+            List<CalendarEvent> deleteList = new List<CalendarEvent>();
             foreach (CalendarEvent googleEvent in eventsInGoogle)
             {
                 if (eventsInExchange.Exists(t => t.Id.Equals(googleEvent.Id))) continue;
+                deleteList.Add(googleEvent);
 
-                Console.WriteLine("Deleting event \"{0}\" ... ", googleEvent.Subject);
+            }
+
+            Console.WriteLine("Found {0} events needing deletion in google", deleteList.Count);
+            foreach (CalendarEvent googleEvent in deleteList)
+            {
+                Console.WriteLine("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
                 gManager.DeleteEvent(googleEvent.Id);
             }
 
