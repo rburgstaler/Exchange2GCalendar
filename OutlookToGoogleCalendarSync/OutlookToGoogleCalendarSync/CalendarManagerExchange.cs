@@ -159,42 +159,7 @@ namespace OutlookToGoogleCalendarSync
                 cEvent = new CalendarEvent(a.Id.ToString(), a.Start, a.End, a.Location, a.Subject, a.Body);
                 events.Add(cEvent);
             }
-            /*
-            foreach (Microsoft.Office.Interop.Outlook.AppointmentItem item in outlookCalendarItems)
-            {
-                cEvent = null;
-
-                
-                if (item.IsRecurring)
-                {
-                    Microsoft.Office.Interop.Outlook.RecurrencePattern rp = item.GetRecurrencePattern();
-                    DateTime first = new DateTime(2008, 8, 31, item.Start.Hour, item.Start.Minute, 0);
-                    DateTime last = new DateTime(2008, 10, 1);
-                    Microsoft.Office.Interop.Outlook.AppointmentItem recur = null;
-
-                    for (DateTime cur = first; cur <= last; cur = cur.AddDays(1))
-                    {
-                        try
-                        {
-                            recur = rp.GetOccurrence(cur);
-                            cEvent = new CalendarEvent(recur.GlobalAppointmentID, recur.Start, recur.End, recur.Location, recur.Subject, recur.Body);
-                        }
-                        catch
-                        { }
-                    }
-                }
-                else
-                {
-
-                    cEvent = new CalendarEvent(item.GlobalAppointmentID, item.Start, item.End, item.Location, item.Subject, item.Body);
-                }
-                
-
-                if (cEvent != null)
-                    events.Add(cEvent);
-            }
-             */
-
+         
             return events;
         }
     }
