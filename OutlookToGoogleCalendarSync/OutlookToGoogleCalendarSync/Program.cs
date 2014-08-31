@@ -20,14 +20,18 @@ namespace OutlookToGoogleCalendarSync
             List<CalendarEvent> events = CalendarManagerExchange.GetAllEvents(exchangeurl, exchangeuser, exchangepassword);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
-            List<CalendarEvent> eventsProcessed = new List<CalendarEvent>();
+
+            //Error check to make sure we do not need to implement paging
+            if (eventsInGoogle.Count == CalendarGlobals.MaxGoogleEntriesToReturn) throw new Exception("Google event feed paging needs to be implemented.");
+
 
             Console.WriteLine("Found {0} events in the outlook calendar", events.Count);
             CalendarEvent searchEvent;
 
             foreach (CalendarEvent cEvent in events)
             {
-                searchEvent = gManager.GetEventFromSyncId(cEvent.Id);
+                //searchEvent = gManager.GetEventFromSyncId(cEvent.Id);
+                searchEvent = eventsInGoogle.Find(t => t.Id.Equals(cEvent.Id));
 
                 if (searchEvent == null)
                 {   // -> create a new event
@@ -43,18 +47,17 @@ namespace OutlookToGoogleCalendarSync
                     Console.WriteLine("Updated");
                 }
 
-                eventsProcessed.Add(cEvent);
             }
 
-            List<CalendarEvent> eventsNotProcessed = eventsInGoogle.Except<CalendarEvent>(eventsProcessed).ToList<CalendarEvent>();
-            if (eventsNotProcessed.Count > 0)
+            //Find all events that exist in Google that do not exist in Exchange
+            foreach (CalendarEvent googleEvent in eventsInGoogle)
             {
-                //TO DO: Fix Delete, only 25 items in google list and I should also ask outlook if item still exists...
-                foreach (CalendarEvent cEvent in eventsNotProcessed)
-                {
-                    //gManager.DeleteEvent(cEvent.Id);
-                }
+                if (events.Exists(t => t.Id.Equals(googleEvent.Id))) continue;
+
+                Console.WriteLine("Deleting event \"{0}\" ... ", googleEvent.Subject);
+                gManager.DeleteEvent(googleEvent.Id);
             }
+
 
 #if DEBUG
             Console.WriteLine("Press any key to continue ...");
