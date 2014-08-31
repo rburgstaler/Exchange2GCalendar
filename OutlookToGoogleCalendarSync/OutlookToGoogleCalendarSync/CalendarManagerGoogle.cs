@@ -169,8 +169,8 @@ namespace OutlookToGoogleCalendarSync
         {
             List<CalendarEvent> events = new List<CalendarEvent>();
             EventQuery query = new EventQuery(string.Format(calendarUrl, this.calendarId));
-            query.StartDate = CalendarGlobals.StartDate;
-            query.EndDate = CalendarGlobals.EndDate;
+            query.StartTime = CalendarGlobals.StartDate;
+            query.EndTime = CalendarGlobals.EndDate;
             query.NumberToRetrieve = CalendarGlobals.MaxGoogleEntriesToReturn; 
             EventFeed myResultsFeed = this.calService.Query(query);
             foreach (EventEntry entry in myResultsFeed.Entries)
