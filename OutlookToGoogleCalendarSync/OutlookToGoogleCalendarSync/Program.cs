@@ -17,18 +17,18 @@ namespace OutlookToGoogleCalendarSync
             CalendarManagerGoogle gManager = new CalendarManagerGoogle(user, pass, calendarId);
             
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
-            List<CalendarEvent> events = CalendarManagerExchange.GetAllEvents(exchangeurl, exchangeuser, exchangepassword);
+            List<CalendarEvent> eventsInExchange = CalendarManagerExchange.GetAllEvents(exchangeurl, exchangeuser, exchangepassword);
+            Console.WriteLine("Found {0} events in the outlook calendar", eventsInExchange.Count);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
 
             //Error check to make sure we do not need to implement paging
             if (eventsInGoogle.Count == CalendarGlobals.MaxGoogleEntriesToReturn) throw new Exception("Google event feed paging needs to be implemented.");
+            Console.WriteLine("Found {0} events in the google calendar", eventsInGoogle.Count);
 
-
-            Console.WriteLine("Found {0} events in the outlook calendar", events.Count);
             CalendarEvent searchEvent;
 
-            foreach (CalendarEvent cEvent in events)
+            foreach (CalendarEvent cEvent in eventsInExchange)
             {
                 //searchEvent = gManager.GetEventFromSyncId(cEvent.Id);
                 searchEvent = eventsInGoogle.Find(t => t.Id.Equals(cEvent.Id));
@@ -52,7 +52,7 @@ namespace OutlookToGoogleCalendarSync
             //Find all events that exist in Google that do not exist in Exchange
             foreach (CalendarEvent googleEvent in eventsInGoogle)
             {
-                if (events.Exists(t => t.Id.Equals(googleEvent.Id))) continue;
+                if (eventsInExchange.Exists(t => t.Id.Equals(googleEvent.Id))) continue;
 
                 Console.WriteLine("Deleting event \"{0}\" ... ", googleEvent.Subject);
                 gManager.DeleteEvent(googleEvent.Id);
