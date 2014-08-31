@@ -136,12 +136,10 @@ namespace OutlookToGoogleCalendarSync
 
 
             // Initialize values for the start and end times, and the number of appointments to retrieve.
-            DateTime startDate = DateTime.Now.AddMonths(-6);
-            DateTime endDate = DateTime.Now.AddMonths(6);
             const int NUM_APPTS = 1000;
 
             // Set the start and end time and number of appointments to retrieve.
-            CalendarView cView = new CalendarView(startDate, endDate, NUM_APPTS);
+            CalendarView cView = new CalendarView(CalendarGlobals.StartDate, CalendarGlobals.EndDate, NUM_APPTS);
 
             // Limit the properties returned to the appointment's subject, start time, and end time. (Body cannot be loaded with FindAppointments, we need to do that later)
             cView.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End, AppointmentSchema.IsRecurring, AppointmentSchema.Id, AppointmentSchema.Location);
@@ -150,8 +148,8 @@ namespace OutlookToGoogleCalendarSync
             // Retrieve a collection of appointments by using the calendar view.
             FindItemsResults<Appointment> appointments = calendar.FindAppointments(cView);
 
-            Console.WriteLine("\nThe first " + NUM_APPTS + " appointments on your calendar from " + startDate.Date.ToShortDateString() +
-                              " to " + endDate.Date.ToShortDateString() + " are: \n");
+            Console.WriteLine("\nThe first " + NUM_APPTS + " appointments on your calendar from " + CalendarGlobals.StartDate.Date.ToShortDateString() +
+                              " to " + CalendarGlobals.EndDate.Date.ToShortDateString() + " are: \n");
 
             //Now that we have found the appointments that we want, we will be able to load the body
             cView.PropertySet.Add(AppointmentSchema.Body);
