@@ -12,11 +12,11 @@ namespace OutlookToGoogleCalendarSync
     {
         private void AddTraceLine(String AMsg)
         {
-            //It was found that a beeping noise was made when the string was greater than 
-            //33000.  We will limit it here to avoid that annoying noise.  Eventually 
-            //we should determine the root cause but for now we will just put in a hack
-            //work around
-            Console.WriteLine(AMsg.Substring(0, Math.Min(33000, AMsg.Length)));
+            //It was found that a beeping noise was made when some of the characters in the output
+            //were the beep character \x0007 or the unicode beep character \x2022.
+            //The following makes it so that the program no longer beeps.
+            String noBeeps = AMsg.Replace('\x0007', ' ').Replace('\x2022', ' ');
+            Console.WriteLine(noBeeps);
         }
 
         public void Trace(string traceType, string traceMessage)
