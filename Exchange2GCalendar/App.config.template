@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Rename this file to app.config and then put in connection information as well as credentials -->
+<configuration>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
+  </startup>
+  <appSettings>
+    <add key="email" value="" />
+    <add key="pass" value="" />
+    <!-- Will attempt to use exchange url.  If it fails it will try to auto-resolve using
+     the exchangeuser setting. -->
+    <add key="exchangeurl" value="" />
+    <add key="exchangeuser" value="" />
+    <add key="exchangepassword" value="" />
+    <add key="calendarId" value="" />
+  </appSettings>
+</configuration>
