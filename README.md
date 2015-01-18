@@ -8,7 +8,7 @@ Prerequisites
 
 Installing the following is a must to get the program to run:
 
-* Google Data API for .NET: https://code.google.com/p/google-gdata/downloads/list
+* Calendar API Client Library for .NET v3: Use te following NuGet command to get this: Install-Package Google.Apis.Calendar.v3
 * The Microsoft Office 2010 Primary Interop Assemblies (PIA): https://www.microsoft.com/en-us/download/details.aspx?id=3508 (If you use another version of office, you should install the appropriate PIA for that version and change the assembly reference.)
 * Microsoft Exchange Web Services Managed API 2.1: http://www.microsoft.com/en-us/download/details.aspx?id=42022
 
