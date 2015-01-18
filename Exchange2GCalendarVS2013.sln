@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookToGoogleCalendarSyncVS2013", "OutlookToGoogleCalendarSync\OutlookToGoogleCalendarSyncVS2013.csproj", "{58CF7A91-4F55-4859-B293-372F0F861324}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookToGoogleCalendarSyncVS2013", "Exchange2GCalendar\Exchange2GCalendarVS2013.csproj", "{58CF7A91-4F55-4859-B293-372F0F861324}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "..\..\google-gdata\clients\cs\src\gcalendar\Calendar.csproj", "{0AD0FA26-A071-4CAC-851C-05B6C26B9888}"
 EndProject
