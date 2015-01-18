@@ -4,13 +4,13 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookToGoogleCalendarSyncVS2013", "Exchange2GCalendar\Exchange2GCalendarVS2013.csproj", "{58CF7A91-4F55-4859-B293-372F0F861324}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "..\..\google-gdata\clients\cs\src\gcalendar\Calendar.csproj", "{0AD0FA26-A071-4CAC-851C-05B6C26B9888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "..\google-gdata\clients\cs\src\gcalendar\Calendar.csproj", "{0AD0FA26-A071-4CAC-851C-05B6C26B9888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core Client", "..\..\google-gdata\clients\cs\src\core\Core Client.csproj", "{B6F6D938-0D45-42BA-8A67-55D92EF03995}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core Client", "..\google-gdata\clients\cs\src\core\Core Client.csproj", "{B6F6D938-0D45-42BA-8A67-55D92EF03995}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common Data Extensions", "..\..\google-gdata\clients\cs\src\extensions\Common Data Extensions.csproj", "{21BCB644-F9C3-4ADC-8BE1-4E55C6565011}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common Data Extensions", "..\google-gdata\clients\cs\src\extensions\Common Data Extensions.csproj", "{21BCB644-F9C3-4ADC-8BE1-4E55C6565011}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access Control", "..\..\google-gdata\clients\cs\src\gacl\Access Control.csproj", "{279D35CE-871A-4C76-B823-A73675EDF191}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access Control", "..\google-gdata\clients\cs\src\gacl\Access Control.csproj", "{279D35CE-871A-4C76-B823-A73675EDF191}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
