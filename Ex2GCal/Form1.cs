@@ -19,24 +19,29 @@ namespace Ex2GCal
 {
     public partial class Form1 : Form
     {
+        private void Msg(String AMsg)
+        {
+            textBox1.Text += AMsg + Environment.NewLine;
+        }
+        
         public Form1()
         {
             InitializeComponent();
         }
         //' Calendar scopes which is initialized on the main method.
 
-        static IList<string> scopes = new List<string>();
+        private IList<string> scopes = new List<string>();
         //' Calendar service.
 
-        static CalendarService service;
+        private CalendarService service;
         private void button1_Click(object sender, EventArgs e)
         {
             // Add the calendar specific scope to the scopes list.
             scopes.Add(CalendarService.Scope.Calendar);
 
             // Display the header and initialize the sample.
-            Console.WriteLine("Google.Apis.Calendar.v3 Sample");
-            Console.WriteLine("==============================");
+            Msg("Google.Apis.Calendar.v3 Sample");
+            Msg("==============================");
 
             UserCredential credential = default(UserCredential);
             using (FileStream stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
@@ -61,24 +66,23 @@ namespace Ex2GCal
                 DisplayFirstCalendarEvents(calendar);
             }
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            Msg("Press any key to continue...");
         }
 
         /// <summary>Displays all calendars.</summary>
-        private static void DisplayList(IList<CalendarListEntry> list)
+        private void DisplayList(IList<CalendarListEntry> list)
         {
-            Console.WriteLine("Lists of calendars:");
+            Msg("Lists of calendars:");
             foreach (CalendarListEntry item in list)
             {
-                Console.WriteLine(item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone);
+                Msg(item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone);
             }
         }
 
         /// <summary>Displays the calendar's events.</summary>
-        private static void DisplayFirstCalendarEvents(CalendarListEntry list)
+        private void DisplayFirstCalendarEvents(CalendarListEntry list)
         {
-            Console.WriteLine(Environment.NewLine + "Maximum 5 first events from {0}:", list.Summary);
+            Msg(Environment.NewLine + String.Format("Maximum 5 first events from {0}:", list.Summary));
             EventsResource.ListRequest requeust = service.Events.List(list.Id);
             // Set MaxResults and TimeMin with sample values
             requeust.MaxResults = 5;
@@ -95,7 +99,7 @@ namespace Ex2GCal
                     }
                 }
 
-                Console.WriteLine(calendarEvent.Summary + ". Start at: " + startDate);
+                Msg(calendarEvent.Summary + ". Start at: " + startDate);
             }
         }
     }
