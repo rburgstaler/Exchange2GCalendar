@@ -78,7 +78,7 @@ namespace Ex2GCal
             Msg("Lists of calendars:");
             foreach (CalendarListEntry item in list)
             {
-                Msg(item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone);
+                Msg(item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone + ", ID: " + item.Id);
             }
         }
 
@@ -106,17 +106,31 @@ namespace Ex2GCal
             }
         }
 
+        private String ConfigPath()
+        {
+            return "Ex2GCal.json";
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            if (File.Exists("client_secrets.json"))
+            if (File.Exists(ConfigPath()))
             {
-                JObject jsObj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText("client_secrets.json"));
-                var inst = jsObj["installed"];
-                if (inst != null)
-                tbClientID.Text = (string)(inst["client_id"] ?? "");
-                tbClientSecret.Text = (string)(inst["client_secret"] ?? "");
+                JObject jsObj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(ConfigPath()));
+                tbClientID.Text = (string)(jsObj["client_id"] ?? "");
+                tbClientSecret.Text = (string)(jsObj["client_secret"] ?? "");
+                tbCalendar.Text = (string)(jsObj["calendar"] ?? "");
             }
+        }
+
+        private void btSaveGoogle_Click(object sender, EventArgs e)
+        {
+            JObject jsObj = new JObject();
+            jsObj["client_id"] = tbClientID.Text;
+            jsObj["client_secret"] = tbClientSecret.Text;
+            jsObj["calendar"] = tbCalendar.Text;
+            String ser = JsonConvert.SerializeObject(jsObj, Formatting.Indented);
+            File.WriteAllText(ConfigPath(), ser);
         }
     }
 }
