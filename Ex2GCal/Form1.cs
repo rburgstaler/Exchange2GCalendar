@@ -14,6 +14,8 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Util.Store;
 using System.IO;
 using System.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ex2GCal
 {
@@ -43,11 +45,12 @@ namespace Ex2GCal
             Msg("Google.Apis.Calendar.v3 Sample");
             Msg("==============================");
 
-            UserCredential credential = default(UserCredential);
-            using (FileStream stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
-            {
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, scopes, "user", CancellationToken.None, new FileDataStore("Calendar.VB.Sample")).Result;
-            }
+            UserCredential credential = null;
+
+            ClientSecrets sec = new ClientSecrets();
+            sec.ClientId = tbClientID.Text;
+            sec.ClientSecret = tbClientSecret.Text;
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore("Calendar.VB.Sample")).Result;
 
             // Create the calendar service using an initializer instance
             BaseClientService.Initializer initializer = new BaseClientService.Initializer();
@@ -100,6 +103,19 @@ namespace Ex2GCal
                 }
 
                 Msg(calendarEvent.Summary + ". Start at: " + startDate);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            if (File.Exists("client_secrets.json"))
+            {
+                JObject jsObj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText("client_secrets.json"));
+                var inst = jsObj["installed"];
+                if (inst != null)
+                tbClientID.Text = (string)(inst["client_id"] ?? "");
+                tbClientSecret.Text = (string)(inst["client_secret"] ?? "");
             }
         }
     }
