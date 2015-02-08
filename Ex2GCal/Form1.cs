@@ -88,20 +88,13 @@ namespace Ex2GCal
             Msg(Environment.NewLine + String.Format("Maximum 5 first events from {0}:", list.Summary));
             EventsResource.ListRequest requeust = service.Events.List(list.Id);
             // Set MaxResults and TimeMin with sample values
-            requeust.MaxResults = 5;
+            requeust.MaxResults = 1000;
             requeust.TimeMin = new DateTime(2014, 10, 1, 20, 0, 0);
             // Fetch the list of events
             foreach (Google.Apis.Calendar.v3.Data.Event calendarEvent in requeust.Execute().Items)
             {
                 string startDate = "Unspecified";
-                if (((calendarEvent.Start != null)))
-                {
-                    if (((calendarEvent.Start.Date != null)))
-                    {
-                        startDate = calendarEvent.Start.Date.ToString();
-                    }
-                }
-
+                if (calendarEvent.Start != null) startDate = calendarEvent.Start.DateTime.ToString() ?? calendarEvent.Start.Date.ToString() ?? startDate;
                 Msg(calendarEvent.Summary + ". Start at: " + startDate);
             }
         }
