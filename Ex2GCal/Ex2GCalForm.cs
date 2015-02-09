@@ -245,14 +245,14 @@ event.setEnd(new EventDateTime().setDateTime(end));
 
                 if (searchEvent == null)
                 {   // -> create a new event
-                    Console.Write("Creating event \"{0}\" ... ", cEvent.Subject);
+                    Msg("Creating event \"{0}\" ... ", cEvent.Subject);
                     gManager.CreateEvent(cEvent);
                     Msg("Created");
                 }
                 else if (cEvent.IsChanged(searchEvent))
                 {
                     // -> update event
-                    Console.Write("Update event \"{0}\" ... ", cEvent.Subject);
+                    Msg("Update event \"{0}\" ... ", cEvent.Subject);
                     gManager.UpdateEvent(cEvent);
                     Msg("Updated");
                 }
