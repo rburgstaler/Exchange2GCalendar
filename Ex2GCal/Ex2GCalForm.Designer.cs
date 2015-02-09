@@ -237,6 +237,7 @@
             // 
             this.tbExchangePassword.Location = new System.Drawing.Point(6, 68);
             this.tbExchangePassword.Name = "tbExchangePassword";
+            this.tbExchangePassword.PasswordChar = '*';
             this.tbExchangePassword.Size = new System.Drawing.Size(382, 20);
             this.tbExchangePassword.TabIndex = 2;
             // 
