@@ -19,14 +19,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Ex2GCal
 {
-    public partial class Form1 : Form
+    public partial class Ex2GCalForm : Form
     {
         private void Msg(String AMsg)
         {
             textBox1.Text += AMsg + Environment.NewLine;
         }
         
-        public Form1()
+        public Ex2GCalForm()
         {
             InitializeComponent();
         }

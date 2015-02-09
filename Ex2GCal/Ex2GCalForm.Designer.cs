@@ -1,6 +1,6 @@
 ﻿namespace Ex2GCal
 {
-    partial class Form1
+    partial class Ex2GCalForm
     {
         /// <summary>
         /// Required designer variable.
