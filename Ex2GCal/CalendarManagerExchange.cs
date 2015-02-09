@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using Microsoft.Exchange.WebServices.Data;
 
-namespace OutlookToGoogleCalendarSync
+namespace Ex2GCal
 {
 
     class TraceListener : ITraceListener
