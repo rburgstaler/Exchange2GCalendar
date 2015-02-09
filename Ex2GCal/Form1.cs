@@ -44,7 +44,7 @@ namespace Ex2GCal
             ClientSecrets sec = new ClientSecrets();
             sec.ClientId = tbClientID.Text;
             sec.ClientSecret = tbClientSecret.Text;
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore("Calendar.VB.Sample")).Result;
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(Path.GetDirectoryName(Application.ExecutablePath), true)).Result;
 
             // Create the calendar service using an initializer instance
             BaseClientService.Initializer initializer = new BaseClientService.Initializer();
