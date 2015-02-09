@@ -30,21 +30,14 @@ namespace Ex2GCal
         {
             InitializeComponent();
         }
-        //' Calendar scopes which is initialized on the main method.
 
-        private IList<string> scopes = new List<string>();
-        //' Calendar service.
-
-        private CalendarService service;
-        private void button1_Click(object sender, EventArgs e)
+        private CalendarService GetGoogleCalendarService()
         {
+            IList<string> scopes = new List<string>();
             textBox1.Text = "";
             // Add the calendar specific scope to the scopes list.
             scopes.Add(CalendarService.Scope.Calendar);
 
-            // Display the header and initialize the sample.
-            Msg("Google.Apis.Calendar.v3 Sample");
-            Msg("==============================");
 
             UserCredential credential = null;
 
@@ -57,7 +50,14 @@ namespace Ex2GCal
             BaseClientService.Initializer initializer = new BaseClientService.Initializer();
             initializer.HttpClientInitializer = credential;
             initializer.ApplicationName = "VB.NET Calendar Sample";
-            service = new CalendarService(initializer);
+            return new CalendarService(initializer);
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            CalendarService service = GetGoogleCalendarService();
 
             // Fetch the list of calendar list
             IList<CalendarListEntry> list = service.CalendarList.List().Execute().Items;
@@ -67,7 +67,7 @@ namespace Ex2GCal
             foreach (CalendarListEntry calendar in list)
             {
                 // Display calendar's events
-                DisplayFirstCalendarEvents(calendar);
+                DisplayFirstCalendarEvents(service, calendar);
 
                 
             }
@@ -125,7 +125,7 @@ event.setEnd(new EventDateTime().setDateTime(end));
         }
 
         /// <summary>Displays the calendar's events.</summary>
-        private void DisplayFirstCalendarEvents(CalendarListEntry list)
+        private void DisplayFirstCalendarEvents(CalendarService service, CalendarListEntry list)
         {
             Msg(Environment.NewLine + String.Format("Maximum 5 first events from {0}:", list.Summary));
             EventsResource.ListRequest requeust = service.Events.List(list.Id);
@@ -141,8 +141,8 @@ event.setEnd(new EventDateTime().setDateTime(end));
                 if (calendarEvent.Start != null) startDate = calendarEvent.Start.DateTime.ToString() ?? calendarEvent.Start.Date.ToString() ?? startDate;
                 Msg(calendarEvent.Summary + ". Start at: " + startDate);
 
-                service.Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
-                Msg("Deleted " + calendarEvent.Id);
+                //service.Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
+                //Msg("Deleted " + calendarEvent.Id);
             
             }
         }
@@ -172,6 +172,14 @@ event.setEnd(new EventDateTime().setDateTime(end));
             jsObj["calendar"] = tbCalendar.Text;
             String ser = JsonConvert.SerializeObject(jsObj, Formatting.Indented);
             File.WriteAllText(ConfigPath(), ser);
+        }
+
+        private void btFindCalendars_Click(object sender, EventArgs e)
+        {
+            IList<CalendarListEntry> list = GetGoogleCalendarService().CalendarList.List().Execute().Items;
+            Msg("Lists of calendars:");
+            foreach (CalendarListEntry item in list)
+                Msg("ID: " + item.Id + " Summary: " + item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone);
         }
     }
 }

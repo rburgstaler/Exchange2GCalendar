@@ -31,13 +31,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbClientID = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tbClientSecret = new System.Windows.Forms.TextBox();
+            this.btSaveGoogle = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.tbCalendar = new System.Windows.Forms.TextBox();
-            this.btSaveGoogle = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbClientSecret = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbClientID = new System.Windows.Forms.TextBox();
+            this.btFindCalendars = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btFindCalendars);
             this.groupBox1.Controls.Add(this.btSaveGoogle);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tbCalendar);
@@ -80,37 +82,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Google";
             // 
-            // tbClientID
+            // btSaveGoogle
             // 
-            this.tbClientID.Location = new System.Drawing.Point(6, 29);
-            this.tbClientID.Name = "tbClientID";
-            this.tbClientID.Size = new System.Drawing.Size(382, 20);
-            this.tbClientID.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Client ID";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Client Secret";
-            // 
-            // tbClientSecret
-            // 
-            this.tbClientSecret.Location = new System.Drawing.Point(6, 68);
-            this.tbClientSecret.Name = "tbClientSecret";
-            this.tbClientSecret.Size = new System.Drawing.Size(382, 20);
-            this.tbClientSecret.TabIndex = 2;
+            this.btSaveGoogle.Location = new System.Drawing.Point(6, 140);
+            this.btSaveGoogle.Name = "btSaveGoogle";
+            this.btSaveGoogle.Size = new System.Drawing.Size(75, 23);
+            this.btSaveGoogle.TabIndex = 6;
+            this.btSaveGoogle.Text = "Save";
+            this.btSaveGoogle.UseVisualStyleBackColor = true;
+            this.btSaveGoogle.Click += new System.EventHandler(this.btSaveGoogle_Click);
             // 
             // label3
             // 
@@ -128,15 +108,47 @@
             this.tbCalendar.Size = new System.Drawing.Size(382, 20);
             this.tbCalendar.TabIndex = 4;
             // 
-            // btSaveGoogle
+            // label2
             // 
-            this.btSaveGoogle.Location = new System.Drawing.Point(313, 140);
-            this.btSaveGoogle.Name = "btSaveGoogle";
-            this.btSaveGoogle.Size = new System.Drawing.Size(75, 23);
-            this.btSaveGoogle.TabIndex = 6;
-            this.btSaveGoogle.Text = "Save";
-            this.btSaveGoogle.UseVisualStyleBackColor = true;
-            this.btSaveGoogle.Click += new System.EventHandler(this.btSaveGoogle_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Client Secret";
+            // 
+            // tbClientSecret
+            // 
+            this.tbClientSecret.Location = new System.Drawing.Point(6, 68);
+            this.tbClientSecret.Name = "tbClientSecret";
+            this.tbClientSecret.Size = new System.Drawing.Size(382, 20);
+            this.tbClientSecret.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Client ID";
+            // 
+            // tbClientID
+            // 
+            this.tbClientID.Location = new System.Drawing.Point(6, 29);
+            this.tbClientID.Name = "tbClientID";
+            this.tbClientID.Size = new System.Drawing.Size(382, 20);
+            this.tbClientID.TabIndex = 0;
+            // 
+            // btFindCalendars
+            // 
+            this.btFindCalendars.Location = new System.Drawing.Point(395, 107);
+            this.btFindCalendars.Name = "btFindCalendars";
+            this.btFindCalendars.Size = new System.Drawing.Size(28, 23);
+            this.btFindCalendars.TabIndex = 7;
+            this.btFindCalendars.Text = "...";
+            this.btFindCalendars.UseVisualStyleBackColor = true;
+            this.btFindCalendars.Click += new System.EventHandler(this.btFindCalendars_Click);
             // 
             // Form1
             // 
@@ -168,6 +180,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbClientID;
         private System.Windows.Forms.Button btSaveGoogle;
+        private System.Windows.Forms.Button btFindCalendars;
     }
 }
 
