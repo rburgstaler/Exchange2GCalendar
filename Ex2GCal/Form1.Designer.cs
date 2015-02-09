@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btFindCalendars = new System.Windows.Forms.Button();
             this.btSaveGoogle = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.tbCalendar = new System.Windows.Forms.TextBox();
@@ -38,7 +39,8 @@
             this.tbClientSecret = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tbClientID = new System.Windows.Forms.TextBox();
-            this.btFindCalendars = new System.Windows.Forms.Button();
+            this.btListAll = new System.Windows.Forms.Button();
+            this.btDeleteAll = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +69,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btDeleteAll);
+            this.groupBox1.Controls.Add(this.btListAll);
             this.groupBox1.Controls.Add(this.btFindCalendars);
             this.groupBox1.Controls.Add(this.btSaveGoogle);
             this.groupBox1.Controls.Add(this.label3);
@@ -81,6 +85,16 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Google";
+            // 
+            // btFindCalendars
+            // 
+            this.btFindCalendars.Location = new System.Drawing.Point(395, 107);
+            this.btFindCalendars.Name = "btFindCalendars";
+            this.btFindCalendars.Size = new System.Drawing.Size(28, 23);
+            this.btFindCalendars.TabIndex = 7;
+            this.btFindCalendars.Text = "...";
+            this.btFindCalendars.UseVisualStyleBackColor = true;
+            this.btFindCalendars.Click += new System.EventHandler(this.btFindCalendars_Click);
             // 
             // btSaveGoogle
             // 
@@ -140,15 +154,25 @@
             this.tbClientID.Size = new System.Drawing.Size(382, 20);
             this.tbClientID.TabIndex = 0;
             // 
-            // btFindCalendars
+            // btListAll
             // 
-            this.btFindCalendars.Location = new System.Drawing.Point(395, 107);
-            this.btFindCalendars.Name = "btFindCalendars";
-            this.btFindCalendars.Size = new System.Drawing.Size(28, 23);
-            this.btFindCalendars.TabIndex = 7;
-            this.btFindCalendars.Text = "...";
-            this.btFindCalendars.UseVisualStyleBackColor = true;
-            this.btFindCalendars.Click += new System.EventHandler(this.btFindCalendars_Click);
+            this.btListAll.Location = new System.Drawing.Point(121, 140);
+            this.btListAll.Name = "btListAll";
+            this.btListAll.Size = new System.Drawing.Size(75, 23);
+            this.btListAll.TabIndex = 8;
+            this.btListAll.Text = "List All";
+            this.btListAll.UseVisualStyleBackColor = true;
+            this.btListAll.Click += new System.EventHandler(this.btListAll_Click);
+            // 
+            // btDeleteAll
+            // 
+            this.btDeleteAll.Location = new System.Drawing.Point(247, 140);
+            this.btDeleteAll.Name = "btDeleteAll";
+            this.btDeleteAll.Size = new System.Drawing.Size(75, 23);
+            this.btDeleteAll.TabIndex = 9;
+            this.btDeleteAll.Text = "Delete All";
+            this.btDeleteAll.UseVisualStyleBackColor = true;
+            this.btDeleteAll.Click += new System.EventHandler(this.btDeleteAll_Click);
             // 
             // Form1
             // 
@@ -181,6 +205,8 @@
         private System.Windows.Forms.TextBox tbClientID;
         private System.Windows.Forms.Button btSaveGoogle;
         private System.Windows.Forms.Button btFindCalendars;
+        private System.Windows.Forms.Button btDeleteAll;
+        private System.Windows.Forms.Button btListAll;
     }
 }
 

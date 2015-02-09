@@ -181,5 +181,36 @@ event.setEnd(new EventDateTime().setDateTime(end));
             foreach (CalendarListEntry item in list)
                 Msg("ID: " + item.Id + " Summary: " + item.Summary + ". Location: " + item.Location + ", TimeZone: " + item.TimeZone);
         }
+
+        private void OperateOnEvents(bool aDeleteAll)
+        {
+            EventsResource.ListRequest request = GetGoogleCalendarService().Events.List(tbCalendar.Text);
+            //requeust.PrivateExtendedProperty = "a=1";
+            request.MaxResults = 2500;
+            //request.TimeMin = new DateTime(2014, 1, 1, 0, 0, 0);
+            // Fetch the list of events
+            foreach (Google.Apis.Calendar.v3.Data.Event calendarEvent in request.Execute().Items)
+            {
+                string startDate = "Unspecified";
+                if (calendarEvent.Start != null) startDate = calendarEvent.Start.DateTime.ToString() ?? calendarEvent.Start.Date.ToString() ?? startDate;
+                Msg(calendarEvent.Summary + ". Start at: " + startDate);
+
+                //service.Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
+                //Msg("Deleted " + calendarEvent.Id);
+
+            }
+        }
+
+        private void btListAll_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            OperateOnEvents(false);
+        }
+
+        private void btDeleteAll_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            Msg("Not yet implemented");
+        }
     }
 }
