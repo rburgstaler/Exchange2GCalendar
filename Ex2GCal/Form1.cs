@@ -38,6 +38,7 @@ namespace Ex2GCal
         private CalendarService service;
         private void button1_Click(object sender, EventArgs e)
         {
+            textBox1.Text = "";
             // Add the calendar specific scope to the scopes list.
             scopes.Add(CalendarService.Scope.Calendar);
 
@@ -67,7 +68,48 @@ namespace Ex2GCal
             {
                 // Display calendar's events
                 DisplayFirstCalendarEvents(calendar);
+
+                
             }
+
+            /*
+Event event = new Event();
+event.setSummary("Appointment");
+event.setLocation("Somewhere");
+
+ArrayList<EventAttendee> attendees = new ArrayList<EventAttendee>();
+attendees.add(new EventAttendee().setEmail("attendeeEmail"));
+// ...
+event.setAttendees(attendees);
+
+Date startDate = new Date();
+Date endDate = new Date(startDate.getTime() + 3600000);
+DateTime start = new DateTime(startDate, TimeZone.getTimeZone("UTC"));
+event.setStart(new EventDateTime().setDateTime(start));
+DateTime end = new DateTime(endDate, TimeZone.getTimeZone("UTC"));
+event.setEnd(new EventDateTime().setDateTime(end));
+             */
+
+            Event entry = new Event();
+
+            entry.Summary = "Event Summary";
+            entry.Description = "This event description";
+            //entry. = cEvent.Body;
+
+            entry.ExtendedProperties = new Event.ExtendedPropertiesData();
+            entry.ExtendedProperties.Private = new Dictionary<string, string>();
+            entry.ExtendedProperties.Shared = new Dictionary<string, string>();
+            entry.ExtendedProperties.Private["a"] = "1";
+            entry.ExtendedProperties.Shared["b"] = "2";
+
+            entry.Start = new EventDateTime();
+            entry.End = new EventDateTime();
+
+            entry.Start.DateTime = DateTime.Now;
+            entry.End.DateTime = DateTime.Now;
+
+            service.Events.Insert(entry, tbCalendar.Text).Execute();
+
 
             Msg("Press any key to continue...");
         }
@@ -87,15 +129,21 @@ namespace Ex2GCal
         {
             Msg(Environment.NewLine + String.Format("Maximum 5 first events from {0}:", list.Summary));
             EventsResource.ListRequest requeust = service.Events.List(list.Id);
+
             // Set MaxResults and TimeMin with sample values
-            requeust.MaxResults = 1000;
-            requeust.TimeMin = new DateTime(2014, 10, 1, 20, 0, 0);
+            requeust.PrivateExtendedProperty = "a=1";
+            requeust.MaxResults = 50;
+            requeust.TimeMin = new DateTime(2015, 2, 6, 20, 0, 0);
             // Fetch the list of events
             foreach (Google.Apis.Calendar.v3.Data.Event calendarEvent in requeust.Execute().Items)
             {
                 string startDate = "Unspecified";
                 if (calendarEvent.Start != null) startDate = calendarEvent.Start.DateTime.ToString() ?? calendarEvent.Start.Date.ToString() ?? startDate;
                 Msg(calendarEvent.Summary + ". Start at: " + startDate);
+
+                service.Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
+                Msg("Deleted " + calendarEvent.Id);
+            
             }
         }
 
