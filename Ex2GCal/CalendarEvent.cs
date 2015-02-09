@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OutlookToGoogleCalendarSync
+namespace Ex2GCal
 {
     /// <summary>
     /// A calender event item
@@ -17,6 +17,9 @@ namespace OutlookToGoogleCalendarSync
         /// <summary>
         /// Constructor
         /// </summary>
+        public CalendarEvent()
+        {
+        }
         public CalendarEvent(string id, DateTime startDate, DateTime endDate, string location, string subject, string body)
         {
             this.StartDate = startDate;

@@ -1,39 +1,56 @@
-﻿using Google.GData.Calendar;
-using Google.GData.Client;
-using Google.GData.Extensions;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
-namespace OutlookToGoogleCalendarSync
+namespace Ex2GCal
 {
     /// <summary>
     /// Class to manage all google calendar requests
     /// </summary>
     public class CalendarManagerGoogle
     {
-        private const string calendarsOwnedUrl = "https://www.google.com/calendar/feeds/default/owncalendars/full";
-        private const string calendarUrl = "https://www.google.com/calendar/feeds/{0}/private/full";
-        private const string serviceName = "jorisv83-googleOutlookSync-1";
-        private const string syncExtendedParameterName = "JorisV83OutlookId";
-        private string calendarId;
-        private CalendarService calService;
+        private const string syncExtendedParameterName = "SynchID";
 
+
+        private CalendarService CalService;
+        private String CalendarID = "";
+
+        private CalendarService GetGoogleCalendarService(string ClientID, string ClientSecret, string CalendarID)
+        {
+            IList<string> scopes = new List<string>();
+            // Add the calendar specific scope to the scopes list.
+            scopes.Add(CalendarService.Scope.Calendar);
+
+
+            UserCredential credential = null;
+
+            ClientSecrets sec = new ClientSecrets();
+            sec.ClientId = ClientID;
+            sec.ClientSecret = ClientSecret;
+            //Temporarily use the Application EXE directory for the FileDataStore
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(Path.GetDirectoryName(Application.ExecutablePath), true)).Result;
+
+            // Create the calendar service using an initializer instance
+            BaseClientService.Initializer initializer = new BaseClientService.Initializer();
+            initializer.HttpClientInitializer = credential;
+            initializer.ApplicationName = "Ex2GCal";
+            return new CalendarService(initializer);
+        }        
+        
         /// <summary>
         /// Constructor
         /// </summary>
-        public CalendarManagerGoogle(string user, string password)
-            : this(user, password, "default")
+        public CalendarManagerGoogle(string aClientID, string aClientSecret, string aCalendarID)
         {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public CalendarManagerGoogle(string user, string password, string calendarId)
-        {
-            this.calService = new CalendarService(serviceName);
-            this.calService.setUserCredentials(user, password);
-            this.calendarId = calendarId;
+            CalService = GetGoogleCalendarService(aClientID, aClientSecret, aCalendarID);
+            CalendarID = aCalendarID;
         }
 
         /// <summary>
@@ -41,26 +58,24 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public void CreateEvent(CalendarEvent cEvent)
         {
-            EventEntry entry = new EventEntry();
+            Event entry = new Event();
 
-            entry.Title.Text = cEvent.Subject;
-            entry.Content.Content = cEvent.Body;
+            entry.Summary = cEvent.Subject;
+            entry.Description = cEvent.Body;
 
-            ExtendedProperty property = new ExtendedProperty();
-            property.Name = syncExtendedParameterName;
-            property.Value = cEvent.Id;
-            entry.ExtensionElements.Add(property);
+            entry.ExtendedProperties = new Event.ExtendedPropertiesData();
+            entry.ExtendedProperties.Private = new Dictionary<string, string>();
+            entry.ExtendedProperties.Private[syncExtendedParameterName] = cEvent.Id;
 
-            Where eventLocation = new Where();
-            eventLocation.ValueString = cEvent.Location;
-            entry.Locations.Add(eventLocation);
+            entry.Location = cEvent.Location;
 
-            When eventTime = new When(cEvent.StartDate, cEvent.EndDate);
-            entry.Times.Add(eventTime);
+            entry.Start = new EventDateTime();
+            entry.End = new EventDateTime();
 
-            Uri postUri = new Uri(string.Format(calendarUrl, this.calendarId));
+            entry.Start.DateTime = cEvent.StartDate;
+            entry.End.DateTime = cEvent.EndDate;
 
-            AtomEntry insertedEntry = this.calService.Insert(postUri, entry);
+            CalService.Events.Insert(entry, CalendarID).Execute();
         }
 
         /// <summary>
@@ -68,27 +83,29 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public void UpdateEvent(CalendarEvent cEvent)
         {
-            EventQuery query = new EventQuery(string.Format(calendarUrl, this.calendarId));
-            query.ExtraParameters = string.Format("extq=[{1}:{0}]", cEvent.Id, syncExtendedParameterName);
-            EventFeed myResultsFeed = this.calService.Query(query);
-            if (myResultsFeed.Entries.Count == 1)
+            EventsResource.ListRequest request = CalService.Events.List(CalendarID);
+
+            // Set MaxResults and TimeMin with sample values
+            request.PrivateExtendedProperty = syncExtendedParameterName + "=" + cEvent.Id;
+            Events lst = request.Execute();
+
+            if (lst.Items.Count == 1)
             {
-                EventEntry firstMatchEntry = (EventEntry)myResultsFeed.Entries[0];
-                firstMatchEntry.Content.Content = cEvent.Body;
-                firstMatchEntry.Title.Text = cEvent.Subject;
+                Event firstMatchEntry = lst.Items[0];
+                firstMatchEntry.Description = cEvent.Body;
+                firstMatchEntry.Summary = cEvent.Subject;
 
-                Where eventLocation = new Where();
-                eventLocation.ValueString = cEvent.Location;
-                firstMatchEntry.Locations.Clear();
-                firstMatchEntry.Locations.Add(eventLocation);
+                firstMatchEntry.Location = cEvent.Location;
 
-                When eventTime = new When(cEvent.StartDate, cEvent.EndDate);
-                firstMatchEntry.Times.Clear();
-                firstMatchEntry.Times.Add(eventTime);
+                firstMatchEntry.Start = new EventDateTime();
+                firstMatchEntry.End = new EventDateTime();
 
-                this.calService.Update(firstMatchEntry);
+                firstMatchEntry.Start.DateTime = cEvent.StartDate;
+                firstMatchEntry.End.DateTime = cEvent.EndDate;
+
+                CalService.Events.Update(firstMatchEntry, CalendarID, firstMatchEntry.Id).Execute();
             }
-            else if (myResultsFeed.Entries.Count > 1)
+            else if (lst.Items.Count > 1)
             {
                 throw new Exception("UpdateEvent: Found more then one event with the given id.");
             }
@@ -99,29 +116,32 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public CalendarEvent GetEventFromSyncId(string id)
         {
-            EventQuery query = new EventQuery(string.Format(calendarUrl, this.calendarId));
-            //query.StartTime = cEvent.StartDate;
-            //query.EndTime = cEvent.EndDate;
-            //query.Query = cEvent.Id;
-            query.ExtraParameters = string.Format("extq=[{1}:{0}]", id, syncExtendedParameterName);
-            EventFeed myResultsFeed = this.calService.Query(query);
-            if (myResultsFeed.Entries.Count == 1)
+            EventsResource.ListRequest request = CalService.Events.List(CalendarID);
+
+            request.PrivateExtendedProperty = syncExtendedParameterName + "=" + id;
+            Events lst = request.Execute();
+
+            if (lst.Items.Count == 1)
             {
-                EventEntry firstMatchEntry = (EventEntry)myResultsFeed.Entries[0];
-                CalendarEvent cEvent = new CalendarEvent(id,
-                    firstMatchEntry.Times[0].StartTime,
-                    firstMatchEntry.Times[0].EndTime,
-                    firstMatchEntry.Locations[0].ValueString,
-                    firstMatchEntry.Title.Text,
-                    firstMatchEntry.Content.Content
-                    );
+                Event firstMatchEntry = lst.Items[0];
+                CalendarEvent cEvent = new CalendarEvent()
+                {
+                    Id = id,
+                    Location = firstMatchEntry.Location ?? "",
+                    Subject = firstMatchEntry.Summary ?? "",
+                    Body = firstMatchEntry.Description ?? ""
+                };
+                if ((firstMatchEntry.Start != null) && (firstMatchEntry.Start.DateTime != null)) cEvent.StartDate = firstMatchEntry.Start.DateTime.Value;
+                if ((firstMatchEntry.End != null) && (firstMatchEntry.End.DateTime != null)) cEvent.EndDate = firstMatchEntry.End.DateTime.Value;
+
                 return cEvent;
             }
-            else if (myResultsFeed.Entries.Count > 1)
+            else if (lst.Items.Count > 1)
             {
                 throw new Exception("GetEventFromSyncId: Found more then one event with the given id.");
             }
             return null;
+
         }
 
         /// <summary>
@@ -129,18 +149,20 @@ namespace OutlookToGoogleCalendarSync
         /// </summary>
         public void DeleteEvent(string id)
         {
-            EventQuery query = new EventQuery(string.Format(calendarUrl, this.calendarId));
-            query.ExtraParameters = string.Format("extq=[{1}:{0}]", id, syncExtendedParameterName);
-            EventFeed myResultsFeed = this.calService.Query(query);
-            if (myResultsFeed.Entries.Count == 1)
+            EventsResource.ListRequest request = CalService.Events.List(CalendarID);
+
+            request.PrivateExtendedProperty = syncExtendedParameterName + "=" + id;
+            Events lst = request.Execute();
+
+            if (lst.Items.Count == 1)
             {
-                EventEntry firstMatchEntry = (EventEntry)myResultsFeed.Entries[0];
-                firstMatchEntry.Delete();
+                CalService.Events.Delete(CalendarID, lst.Items[0].Id).Execute();
             }
-            else if (myResultsFeed.Entries.Count > 1)
+            else if (lst.Items.Count > 1)
             {
                 throw new Exception("DeleteEvent: Found more then one event with the given id.");
             }
+
         }
 
         /// <summary>
@@ -149,16 +171,9 @@ namespace OutlookToGoogleCalendarSync
         public List<string> GetAllOwnedCalendars()
         {
             List<string> calendars = new List<string>();
-            CalendarQuery query = new CalendarQuery();
 
-            query.Uri = new Uri(calendarsOwnedUrl);
-            CalendarFeed resultFeed = (CalendarFeed)this.calService.Query(query);
-
-            foreach (CalendarEntry entry in resultFeed.Entries)
-            {
-                calendars.Add(entry.Title.Text);
-            }
-
+            IList<CalendarListEntry> list = CalService.CalendarList.List().Execute().Items;
+            foreach (CalendarListEntry item in list) calendars.Add(item.Id);
             return calendars;
         }
 
@@ -168,34 +183,26 @@ namespace OutlookToGoogleCalendarSync
         public List<CalendarEvent> GetAllEvents()
         {
             List<CalendarEvent> events = new List<CalendarEvent>();
-            EventQuery query = new EventQuery(string.Format(calendarUrl, this.calendarId));
-            query.StartTime = CalendarGlobals.StartDate;
-            query.EndTime = CalendarGlobals.EndDate;
-            query.NumberToRetrieve = CalendarGlobals.MaxGoogleEntriesToReturn; 
-            EventFeed myResultsFeed = this.calService.Query(query);
-            foreach (EventEntry entry in myResultsFeed.Entries)
-            {
-                string id = "";
-                foreach (object obj in entry.ExtensionElements)
-                {
-                    if (obj is ExtendedProperty)
-                    {
-                        ExtendedProperty exProp = obj as ExtendedProperty;
-                        if (exProp.Name == syncExtendedParameterName)
-                        {
-                            id = exProp.Value;
-                            break;
-                        }
-                    }
-                }
+            EventsResource.ListRequest request = CalService.Events.List(CalendarID);
 
-                events.Add(new CalendarEvent(id,
-                    entry.Times[0].StartTime,
-                    entry.Times[0].EndTime,
-                    entry.Locations[0].ValueString,
-                    entry.Title.Text,
-                    entry.Content.Content
-                    ));
+            // Set MaxResults and TimeMin with sample values
+            request.MaxResults = 2500; //2500 is currently the max
+            Events lst = request.Execute();
+
+            foreach (Event evt in lst.Items)
+            {
+                CalendarEvent cEvent = new CalendarEvent()
+                {
+                    Id = "", //Start out as blank
+                    Location = evt.Location ?? "",
+                    Subject = evt.Summary ?? "",
+                    Body = evt.Description ?? ""
+                };
+                if ((evt.Start != null) && (evt.Start.DateTime != null)) cEvent.StartDate = evt.Start.DateTime.Value;
+                if ((evt.End != null) && (evt.End.DateTime != null)) cEvent.EndDate = evt.End.DateTime.Value;
+
+                String tmpId = "";
+                if ((evt.ExtendedProperties != null) && (evt.ExtendedProperties.Private != null) && (evt.ExtendedProperties.Private.TryGetValue(syncExtendedParameterName, out tmpId))) cEvent.Id = tmpId;
             }
             return events;
         }

@@ -90,6 +90,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarEvent.cs" />
+    <Compile Include="CalendarManagerGoogle.cs" />
     <Compile Include="Ex2GCalForm.cs">
       <SubType>Form</SubType>
     </Compile>
