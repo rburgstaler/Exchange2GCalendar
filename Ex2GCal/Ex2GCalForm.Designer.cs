@@ -31,6 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btDeleteAll = new System.Windows.Forms.Button();
+            this.btListAll = new System.Windows.Forms.Button();
             this.btFindCalendars = new System.Windows.Forms.Button();
             this.btSaveGoogle = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,14 +41,21 @@
             this.tbClientSecret = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tbClientID = new System.Windows.Forms.TextBox();
-            this.btListAll = new System.Windows.Forms.Button();
-            this.btDeleteAll = new System.Windows.Forms.Button();
+            this.btSynch = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbExchangeURL = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbExchangePassword = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbExchangeUserName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(32, 28);
+            this.button1.Location = new System.Drawing.Point(28, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(138, 33);
             this.button1.TabIndex = 0;
@@ -59,11 +68,11 @@
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(13, 187);
+            this.textBox1.Location = new System.Drawing.Point(13, 250);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(642, 333);
+            this.textBox1.Size = new System.Drawing.Size(1097, 418);
             this.textBox1.TabIndex = 1;
             this.textBox1.WordWrap = false;
             // 
@@ -79,12 +88,32 @@
             this.groupBox1.Controls.Add(this.tbClientSecret);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.tbClientID);
-            this.groupBox1.Location = new System.Drawing.Point(226, 12);
+            this.groupBox1.Location = new System.Drawing.Point(667, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(429, 169);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Google";
+            // 
+            // btDeleteAll
+            // 
+            this.btDeleteAll.Location = new System.Drawing.Point(247, 140);
+            this.btDeleteAll.Name = "btDeleteAll";
+            this.btDeleteAll.Size = new System.Drawing.Size(75, 23);
+            this.btDeleteAll.TabIndex = 9;
+            this.btDeleteAll.Text = "Delete All";
+            this.btDeleteAll.UseVisualStyleBackColor = true;
+            this.btDeleteAll.Click += new System.EventHandler(this.btDeleteAll_Click);
+            // 
+            // btListAll
+            // 
+            this.btListAll.Location = new System.Drawing.Point(121, 140);
+            this.btListAll.Name = "btListAll";
+            this.btListAll.Size = new System.Drawing.Size(75, 23);
+            this.btListAll.TabIndex = 8;
+            this.btListAll.Text = "List All";
+            this.btListAll.UseVisualStyleBackColor = true;
+            this.btListAll.Click += new System.EventHandler(this.btListAll_Click);
             // 
             // btFindCalendars
             // 
@@ -154,39 +183,96 @@
             this.tbClientID.Size = new System.Drawing.Size(382, 20);
             this.tbClientID.TabIndex = 0;
             // 
-            // btListAll
+            // btSynch
             // 
-            this.btListAll.Location = new System.Drawing.Point(121, 140);
-            this.btListAll.Name = "btListAll";
-            this.btListAll.Size = new System.Drawing.Size(75, 23);
-            this.btListAll.TabIndex = 8;
-            this.btListAll.Text = "List All";
-            this.btListAll.UseVisualStyleBackColor = true;
-            this.btListAll.Click += new System.EventHandler(this.btListAll_Click);
+            this.btSynch.Location = new System.Drawing.Point(28, 64);
+            this.btSynch.Name = "btSynch";
+            this.btSynch.Size = new System.Drawing.Size(138, 35);
+            this.btSynch.TabIndex = 3;
+            this.btSynch.Text = "Synch";
+            this.btSynch.UseVisualStyleBackColor = true;
+            this.btSynch.Click += new System.EventHandler(this.btSynch_Click);
             // 
-            // btDeleteAll
+            // groupBox2
             // 
-            this.btDeleteAll.Location = new System.Drawing.Point(247, 140);
-            this.btDeleteAll.Name = "btDeleteAll";
-            this.btDeleteAll.Size = new System.Drawing.Size(75, 23);
-            this.btDeleteAll.TabIndex = 9;
-            this.btDeleteAll.Text = "Delete All";
-            this.btDeleteAll.UseVisualStyleBackColor = true;
-            this.btDeleteAll.Click += new System.EventHandler(this.btDeleteAll_Click);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.tbExchangeURL);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.tbExchangePassword);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.tbExchangeUserName);
+            this.groupBox2.Location = new System.Drawing.Point(191, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(429, 169);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Exchange";
             // 
-            // Form1
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 91);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "URL";
+            // 
+            // tbExchangeURL
+            // 
+            this.tbExchangeURL.Location = new System.Drawing.Point(6, 107);
+            this.tbExchangeURL.Name = "tbExchangeURL";
+            this.tbExchangeURL.Size = new System.Drawing.Size(382, 20);
+            this.tbExchangeURL.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 52);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Password";
+            // 
+            // tbExchangePassword
+            // 
+            this.tbExchangePassword.Location = new System.Drawing.Point(6, 68);
+            this.tbExchangePassword.Name = "tbExchangePassword";
+            this.tbExchangePassword.Size = new System.Drawing.Size(382, 20);
+            this.tbExchangePassword.TabIndex = 2;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 13);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Username";
+            // 
+            // tbExchangeUserName
+            // 
+            this.tbExchangeUserName.Location = new System.Drawing.Point(6, 29);
+            this.tbExchangeUserName.Name = "tbExchangeUserName";
+            this.tbExchangeUserName.Size = new System.Drawing.Size(382, 20);
+            this.tbExchangeUserName.TabIndex = 0;
+            // 
+            // Ex2GCalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(667, 532);
+            this.ClientSize = new System.Drawing.Size(1122, 680);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.btSynch);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "Ex2GCalForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,6 +293,14 @@
         private System.Windows.Forms.Button btFindCalendars;
         private System.Windows.Forms.Button btDeleteAll;
         private System.Windows.Forms.Button btListAll;
+        private System.Windows.Forms.Button btSynch;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox tbExchangeURL;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbExchangePassword;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbExchangeUserName;
     }
 }
 

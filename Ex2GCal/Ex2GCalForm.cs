@@ -21,9 +21,9 @@ namespace Ex2GCal
 {
     public partial class Ex2GCalForm : Form
     {
-        private void Msg(String AMsg)
+        private void Msg(String AMsg, params Object[] list)
         {
-            textBox1.Text += AMsg + Environment.NewLine;
+            textBox1.Text += String.Format(AMsg, list) + Environment.NewLine;
         }
         
         public Ex2GCalForm()
@@ -161,6 +161,10 @@ event.setEnd(new EventDateTime().setDateTime(end));
                 tbClientID.Text = (string)(jsObj["client_id"] ?? "");
                 tbClientSecret.Text = (string)(jsObj["client_secret"] ?? "");
                 tbCalendar.Text = (string)(jsObj["calendar"] ?? "");
+
+                tbExchangeUserName.Text = (string)(jsObj["ExchangeUserName"] ?? "");
+                tbExchangePassword.Text = (string)(jsObj["ExchangePassword"] ?? "");
+                tbExchangeURL.Text = (string)(jsObj["ExchangeURL"] ?? "");
             }
         }
 
@@ -170,6 +174,10 @@ event.setEnd(new EventDateTime().setDateTime(end));
             jsObj["client_id"] = tbClientID.Text;
             jsObj["client_secret"] = tbClientSecret.Text;
             jsObj["calendar"] = tbCalendar.Text;
+            jsObj["ExchangeUserName"] = tbExchangeUserName.Text;
+            jsObj["ExchangePassword"] = tbExchangePassword.Text;
+            jsObj["ExchangeURL"] = tbExchangeURL.Text;
+
             String ser = JsonConvert.SerializeObject(jsObj, Formatting.Indented);
             File.WriteAllText(ConfigPath(), ser);
         }
@@ -212,5 +220,68 @@ event.setEnd(new EventDateTime().setDateTime(end));
             textBox1.Text = "";
             Msg("Not yet implemented");
         }
+
+        private void PerformSynch()
+        {
+
+            CalendarManagerGoogle gManager = new CalendarManagerGoogle(tbClientID.Text, tbClientSecret.Text, tbCalendar.Text);
+
+            //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
+            List<CalendarEvent> eventsInExchange = CalendarManagerExchange.GetAllEvents(tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
+            Msg("Found {0} events in the outlook calendar", eventsInExchange.Count);
+
+            List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
+
+            //Error check to make sure we do not need to implement paging
+            if (eventsInGoogle.Count == CalendarGlobals.MaxGoogleEntriesToReturn) throw new Exception("Google event feed paging needs to be implemented.");
+            Msg("Found {0} events in the google calendar", eventsInGoogle.Count);
+
+            CalendarEvent searchEvent;
+
+            foreach (CalendarEvent cEvent in eventsInExchange)
+            {
+                //searchEvent = gManager.GetEventFromSyncId(cEvent.Id);
+                searchEvent = eventsInGoogle.Find(t => t.Id.Equals(cEvent.Id));
+
+                if (searchEvent == null)
+                {   // -> create a new event
+                    Console.Write("Creating event \"{0}\" ... ", cEvent.Subject);
+                    gManager.CreateEvent(cEvent);
+                    Msg("Created");
+                }
+                else if (cEvent.IsChanged(searchEvent))
+                {
+                    // -> update event
+                    Console.Write("Update event \"{0}\" ... ", cEvent.Subject);
+                    gManager.UpdateEvent(cEvent);
+                    Msg("Updated");
+                }
+
+            }
+
+            //Find all events that exist in Google that do not exist in Exchange
+            List<CalendarEvent> deleteList = new List<CalendarEvent>();
+            foreach (CalendarEvent googleEvent in eventsInGoogle)
+            {
+                if (eventsInExchange.Exists(t => t.Id.Equals(googleEvent.Id))) continue;
+                deleteList.Add(googleEvent);
+
+            }
+
+            Msg("Found {0} events needing deletion in google", deleteList.Count);
+            foreach (CalendarEvent googleEvent in deleteList)
+            {
+                Msg("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
+                gManager.DeleteEvent(googleEvent.Id);
+            }
+
+
+        }
+
+        private void btSynch_Click(object sender, EventArgs e)
+        {
+            PerformSynch();
+        }
+
     }
 }
