@@ -221,20 +221,36 @@ event.setEnd(new EventDateTime().setDateTime(end));
             Msg("Not yet implemented");
         }
 
+        delegate void StrCallback(string text, params Object[] list);
+        private void ThreadMsg(String msg, params Object[] list)
+        {
+            if (textBox1.InvokeRequired)
+            {
+                StrCallback d = new StrCallback(ThreadMsg);
+                Invoke(d, new object[] { msg, list });
+            }
+            else
+            {
+                Msg(msg, list);
+            }
+
+        }
+
         private void PerformSynch()
         {
 
             CalendarManagerGoogle gManager = new CalendarManagerGoogle(tbClientID.Text, tbClientSecret.Text, tbCalendar.Text);
 
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
+            ThreadMsg("Getting all events from Google Calendar");
             List<CalendarEvent> eventsInExchange = CalendarManagerExchange.GetAllEvents(tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
-            Msg("Found {0} events in the outlook calendar", eventsInExchange.Count);
+            ThreadMsg("Found {0} events in the outlook calendar", eventsInExchange.Count);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
 
             //Error check to make sure we do not need to implement paging
             if (eventsInGoogle.Count == CalendarGlobals.MaxGoogleEntriesToReturn) throw new Exception("Google event feed paging needs to be implemented.");
-            Msg("Found {0} events in the google calendar", eventsInGoogle.Count);
+            ThreadMsg("Found {0} events in the google calendar", eventsInGoogle.Count);
 
             CalendarEvent searchEvent;
 
@@ -245,16 +261,16 @@ event.setEnd(new EventDateTime().setDateTime(end));
 
                 if (searchEvent == null)
                 {   // -> create a new event
-                    Msg("Creating event \"{0}\" ... ", cEvent.Subject);
+                    ThreadMsg("Creating event \"{0}\" ... ", cEvent.Subject);
                     gManager.CreateEvent(cEvent);
-                    Msg("Created");
+                    ThreadMsg("Created");
                 }
                 else if (cEvent.IsChanged(searchEvent))
                 {
                     // -> update event
-                    Msg("Update event \"{0}\" ... ", cEvent.Subject);
+                    ThreadMsg("Update event \"{0}\" ... ", cEvent.Subject);
                     gManager.UpdateEvent(cEvent);
-                    Msg("Updated");
+                    ThreadMsg("Updated");
                 }
 
             }
@@ -268,10 +284,10 @@ event.setEnd(new EventDateTime().setDateTime(end));
 
             }
 
-            Msg("Found {0} events needing deletion in google", deleteList.Count);
+            ThreadMsg("Found {0} events needing deletion in google", deleteList.Count);
             foreach (CalendarEvent googleEvent in deleteList)
             {
-                Msg("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
+                ThreadMsg("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
                 gManager.DeleteEvent(googleEvent.Id);
             }
 
@@ -280,7 +296,9 @@ event.setEnd(new EventDateTime().setDateTime(end));
 
         private void btSynch_Click(object sender, EventArgs e)
         {
-            PerformSynch();
+            Thread thd = new Thread(new ThreadStart(PerformSynch));
+            btSynch.Enabled = false;
+            thd.Start();
         }
 
     }
