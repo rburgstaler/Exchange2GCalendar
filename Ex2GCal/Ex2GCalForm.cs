@@ -242,9 +242,9 @@ event.setEnd(new EventDateTime().setDateTime(end));
             CalendarManagerGoogle gManager = new CalendarManagerGoogle(tbClientID.Text, tbClientSecret.Text, tbCalendar.Text);
 
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
-            ThreadMsg("Getting all events from Google Calendar");
+            ThreadMsg("Getting all events from Outlook Calendar");
             List<CalendarEvent> eventsInExchange = CalendarManagerExchange.GetAllEvents(tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
-            ThreadMsg("Found {0} events in the outlook calendar", eventsInExchange.Count);
+            ThreadMsg("Found {0} events in the Outlook calendar", eventsInExchange.Count);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
 
