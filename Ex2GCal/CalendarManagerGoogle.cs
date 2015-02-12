@@ -203,6 +203,7 @@ namespace Ex2GCal
 
                 String tmpId = "";
                 if ((evt.ExtendedProperties != null) && (evt.ExtendedProperties.Private != null) && (evt.ExtendedProperties.Private.TryGetValue(syncExtendedParameterName, out tmpId))) cEvent.Id = tmpId;
+                events.Add(cEvent);
             }
             return events;
         }
