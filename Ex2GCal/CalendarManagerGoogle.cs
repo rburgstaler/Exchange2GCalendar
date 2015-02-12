@@ -187,6 +187,8 @@ namespace Ex2GCal
 
             // Set MaxResults and TimeMin with sample values
             request.MaxResults = 2500; //2500 is currently the max
+            request.TimeMin = CalendarGlobals.StartDate;
+            request.TimeMax = CalendarGlobals.EndDate;
             Events lst = request.Execute();
 
             foreach (Event evt in lst.Items)
