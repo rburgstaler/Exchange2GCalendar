@@ -23,7 +23,7 @@ namespace Ex2GCal
     {
         private void Msg(String AMsg, params Object[] list)
         {
-            textBox1.Text += String.Format(AMsg, list) + Environment.NewLine;
+            textBox1.AppendText(String.Format(AMsg, list) + Environment.NewLine);
         }
         
         public Ex2GCalForm()
@@ -34,7 +34,6 @@ namespace Ex2GCal
         private CalendarService GetGoogleCalendarService()
         {
             IList<string> scopes = new List<string>();
-            textBox1.Text = "";
             // Add the calendar specific scope to the scopes list.
             scopes.Add(CalendarService.Scope.Calendar);
 
@@ -183,10 +182,10 @@ namespace Ex2GCal
             {
                 string startDate = "Unspecified";
                 if (calendarEvent.Start != null) startDate = calendarEvent.Start.DateTime.ToString() ?? calendarEvent.Start.Date.ToString() ?? startDate;
-                Msg(calendarEvent.Summary + ". Start at: " + startDate);
+                ThreadMsg(calendarEvent.Summary + ". Start at: " + startDate);
 
-                //service.Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
-                //Msg("Deleted " + calendarEvent.Id);
+                GetGoogleCalendarService().Events.Delete(tbCalendar.Text, calendarEvent.Id).Execute();
+                ThreadMsg("Deleted " + calendarEvent.Id);
 
             }
         }
@@ -199,8 +198,19 @@ namespace Ex2GCal
 
         private void btDeleteAll_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            Msg("Not yet implemented");
+            DialogResult res = MessageBox.Show("Are you sure you want to delete all items ??",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
+            {
+                textBox1.Text = "";
+                Thread thd = new Thread(new ThreadStart(
+                    delegate()
+                    {
+                        OperateOnEvents(true);
+                    }));
+                thd.Start();
+            }
         }
 
         delegate void ThreadProcType();
