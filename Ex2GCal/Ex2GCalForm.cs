@@ -203,19 +203,30 @@ namespace Ex2GCal
             Msg("Not yet implemented");
         }
 
-        delegate void StrCallback(string text, params Object[] list);
-        private void ThreadMsg(String msg, params Object[] list)
+        delegate void ThreadProcType();
+        delegate void ThreadProcCaller(ThreadProcType AProc);
+        private void ThreadProc(ThreadProcType AProc)
         {
-            if (textBox1.InvokeRequired)
+            if (InvokeRequired)
             {
-                StrCallback d = new StrCallback(ThreadMsg);
-                Invoke(d, new object[] { msg, list });
+                ThreadProcCaller d = new ThreadProcCaller(ThreadProc);
+                Invoke(d, new object[] { AProc });
             }
             else
             {
-                Msg(msg, list);
+                AProc();
             }
 
+        }
+
+
+        private void ThreadMsg(String msg, params Object[] list)
+        {
+            ThreadProc(
+                delegate()
+                {
+                    Msg(msg, list);
+                });
         }
 
         private void PerformSynch()
@@ -272,6 +283,13 @@ namespace Ex2GCal
                 ThreadMsg("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
                 gManager.DeleteEvent(googleEvent.Id);
             }
+
+            //We are done so enable the synch button
+            ThreadProc(
+                delegate()
+                {
+                    btSynch.Enabled = true;
+                });
 
 
         }
