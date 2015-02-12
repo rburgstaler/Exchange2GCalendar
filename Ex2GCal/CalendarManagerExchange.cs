@@ -7,16 +7,19 @@ using Microsoft.Exchange.WebServices.Data;
 
 namespace Ex2GCal
 {
+    public delegate void ExchangeStatus(String msg, params Object[] list);
 
     class TraceListener : ITraceListener
     {
+        public ExchangeStatus Status = null;
+
         private void AddTraceLine(String AMsg)
         {
             //It was found that a beeping noise was made when some of the characters in the output
             //were the beep character \x0007 or the unicode beep character \x2022.
             //The following makes it so that the program no longer beeps.
             String noBeeps = AMsg.Replace('\x0007', ' ').Replace('\x2022', ' ');
-            Console.WriteLine(noBeeps);
+            if (Status != null) Status(noBeeps);
         }
 
         public void Trace(string traceType, string traceMessage)
@@ -95,7 +98,9 @@ namespace Ex2GCal
             return result;
         }
 
-        public static List<CalendarEvent> GetAllEvents(String exchangeurl, String user, String pass)
+        public ExchangeStatus Status = null;
+
+        public List<CalendarEvent> GetAllEvents(String exchangeurl, String user, String pass)
         {
             List<CalendarEvent> events = new List<CalendarEvent>();
 
@@ -105,7 +110,7 @@ namespace Ex2GCal
 
             service.TraceEnabled = true;
             service.TraceFlags = TraceFlags.All;
-            service.TraceListener = new TraceListener();
+            service.TraceListener = new TraceListener() { Status = this.Status };
 
 
             //When attempting to connect to EWS, it is much quicker to just use the url directly

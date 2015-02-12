@@ -246,7 +246,7 @@ namespace Ex2GCal
 
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
             ThreadMsg("Getting all events from Outlook Calendar");
-            List<CalendarEvent> eventsInExchange = CalendarManagerExchange.GetAllEvents(tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
+            List<CalendarEvent> eventsInExchange = (new CalendarManagerExchange() { Status = ThreadMsg}).GetAllEvents(tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
             ThreadMsg("Found {0} events in the Outlook calendar", eventsInExchange.Count);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
