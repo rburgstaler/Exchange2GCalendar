@@ -97,10 +97,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalendarEvent.cs" />
-    <Compile Include="CalendarGlobals.cs" />
-    <Compile Include="CalendarManagerExchange.cs" />
-    <Compile Include="CalendarManagerGoogle.cs" />
     <Compile Include="Ex2GCalForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibEx2GCal\LibEx2GCal.csproj">
+      <Project>{fff28217-fbaf-43c1-ba3c-26b64a9acac2}</Project>
+      <Name>LibEx2GCal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

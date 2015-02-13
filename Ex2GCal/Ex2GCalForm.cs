@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using LibEx2GCal;
 
 namespace Ex2GCal
 {
