@@ -1,31 +1,30 @@
 Introduction
 ============
 
-A console program to sync your outlook calendar to a specified Google calendar. The sync happens one way.
+A console program, Windows forms application, and library to sync your Exchange Server to a specified Google calendar. The sync happens one way.
 
 Prerequisites
 =============
 
-Installing the following is a must to get the program to run:
+The following packages are requirements to compile but Visual Studio 2013 integrated Nuget should handle getting these for you :
 
-* Calendar API Client Library for .NET v3: Use te following NuGet command to get this: Install-Package Google.Apis.Calendar.v3
-* The Microsoft Office 2010 Primary Interop Assemblies (PIA): https://www.microsoft.com/en-us/download/details.aspx?id=3508 (If you use another version of office, you should install the appropriate PIA for that version and change the assembly reference.)
-* Microsoft Exchange Web Services Managed API 2.1: http://www.microsoft.com/en-us/download/details.aspx?id=42022
-
-Screenshots
-============
-
-A few screenshots of the program in action.
-
-*Main view*  
-![Before](https://raw.github.com/jorisv83/Outlook-To-Google-Calendar-Sync/master/Screenshots/running.png "Before run")
+* Calendar API Client Library for .NET v3: Use the following NuGet command to get this: Install-Package Google.Apis.Calendar.v3
+* Microsoft Exchange Web Services Managed API 2.1: http://www.microsoft.com/en-us/download/details.aspx?id=42022: Use the following NuGet command to get this: Install-Package Microsoft.Exchange.WebServices
 
 Usage
 =====
 
-In the app.config file you need to add your gmail username, password and the calendar to push the changes to.
-
-How to find the calendar?
--------------------------
-Create a calendar in google and find the calendar ID. To find the ID go to the calendar properties and find the XML button in the section �address for this calendar�.
-The ID you are looking for is something like this: 123456789ABCDEFG%40group.calendar.google.com
+Run Ex2GCal.exe:
+1.) Enter in the Exchange username, password, and url
+2.) Enter in the Google Client ID, and Client Secret
+    The following info was found @: http://samples.google-api-dotnet-client.googlecode.com/hg/Calendar.VB.ConsoleApp/README.html
+2.a.) Visit the Google APIs console (https://code.google.com/apis/console/)
+2.b.) If this is your first time, click "Create project..."
+2.c.) Otherwise, click on the drop down under the "Google APIs" logo at the top left, and click "Create..." under "Other projects"
+2.d.) Click on "API Access", and then on "Create an OAuth 2.0 Client ID...".
+2.e.) Enter a product name and click "Next".
+2.f.) Select "Installed application" and click "Create client ID".
+2.g.) In the newly created "Client ID for installed applications", copy the client ID and client secrets into the AdSenseSample.cs file.
+2.h.) Activate the Calendar API for your project.
+3.) Enter in the Google Calendar
+3.a.) This can be found by clicking the "..." button next to the Calendar text box once the proper Client ID and Client Secret have been entered
