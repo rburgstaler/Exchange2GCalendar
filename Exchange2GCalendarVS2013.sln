@@ -4,6 +4,10 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex2GCal", "Ex2GCal\Ex2GCal.csproj", "{DAFF65BA-C506-4C21-9E7A-F3C84E774F79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEx2GCal", "LibEx2GCal\LibEx2GCal.csproj", "{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex2GCalCmd", "Ex2GCalCmd\Ex2GCalCmd.csproj", "{02FDD833-515A-4457-A359-845A3DB60F71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		ASP|Any CPU = ASP|Any CPU
@@ -17,6 +21,18 @@ Global
 		{DAFF65BA-C506-4C21-9E7A-F3C84E774F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAFF65BA-C506-4C21-9E7A-F3C84E774F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAFF65BA-C506-4C21-9E7A-F3C84E774F79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.ASP|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.ASP|Any CPU.Build.0 = Release|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF28217-FBAF-43C1-BA3C-26B64A9ACAC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.ASP|Any CPU.ActiveCfg = Release|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.ASP|Any CPU.Build.0 = Release|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02FDD833-515A-4457-A359-845A3DB60F71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
