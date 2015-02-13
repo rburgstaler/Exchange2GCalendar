@@ -34,7 +34,9 @@ namespace LibEx2GCal
             sec.ClientId = ClientID;
             sec.ClientSecret = ClientSecret;
             //Temporarily use the Application EXE directory for the FileDataStore
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(@"D:\Debug\Google", true)).Result;
+            String filepath = @"D:\Debug\Google";
+            Directory.CreateDirectory(filepath);
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(filepath, true)).Result;
 
             // Create the calendar service using an initializer instance
             BaseClientService.Initializer initializer = new BaseClientService.Initializer();
