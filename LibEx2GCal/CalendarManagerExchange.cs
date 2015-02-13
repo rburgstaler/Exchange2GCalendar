@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using Microsoft.Exchange.WebServices.Data;
 
-namespace Ex2GCal
+namespace LibEx2GCal
 {
     public delegate void ExchangeStatus(String msg, params Object[] list);
 

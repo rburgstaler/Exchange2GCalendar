@@ -7,9 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
 
-namespace Ex2GCal
+namespace LibEx2GCal
 {
     /// <summary>
     /// Class to manage all google calendar requests
@@ -35,7 +34,7 @@ namespace Ex2GCal
             sec.ClientId = ClientID;
             sec.ClientSecret = ClientSecret;
             //Temporarily use the Application EXE directory for the FileDataStore
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(Path.GetDirectoryName(Application.ExecutablePath), true)).Result;
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(sec, scopes, "user", CancellationToken.None, new FileDataStore(@"D:\Debug\Google", true)).Result;
 
             // Create the calendar service using an initializer instance
             BaseClientService.Initializer initializer = new BaseClientService.Initializer();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ex2GCal
+namespace LibEx2GCal
 {
     /// <summary>
     /// A calender event item
