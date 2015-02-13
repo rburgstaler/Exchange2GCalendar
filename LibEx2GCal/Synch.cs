@@ -7,17 +7,28 @@ using System.Threading.Tasks;
 namespace LibEx2GCal
 {
     public delegate void SynchMessage(String Msg, params Object[] list);
+
+    public class SynchParams
+    {
+        public String GoogleClientID { get; set; }
+        public String GoogleClientSecret { get; set; }
+        public String GoogleCalendar { get; set; }
+        public String ExchangeURL { get; set; }
+        public String ExchangeUserName { get; set; }
+        public String ExchangePassword { get; set; }
+    }
+
     public class Synch
     {
 
-        static public void PerformSynch(SynchMessage msgCallback, String tbClientID, String tbClientSecret, String tbCalendar, String tbExchangeURL, String tbExchangeUserName, String tbExchangePassword)
+        static public void PerformSynch(SynchMessage msgCallback, SynchParams SynchParams)
         {
 
-            CalendarManagerGoogle gManager = new CalendarManagerGoogle(tbClientID, tbClientSecret, tbCalendar);
+            CalendarManagerGoogle gManager = new CalendarManagerGoogle(SynchParams.GoogleClientID, SynchParams.GoogleClientSecret, SynchParams.GoogleCalendar);
 
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
             msgCallback("Getting all events from Outlook Calendar");
-            List<CalendarEvent> eventsInExchange = (new CalendarManagerExchange() { Status = new ExchangeStatus(msgCallback) }).GetAllEvents(tbExchangeURL, tbExchangeUserName, tbExchangePassword);
+            List<CalendarEvent> eventsInExchange = (new CalendarManagerExchange() { Status = new ExchangeStatus(msgCallback) }).GetAllEvents(SynchParams.ExchangeURL, SynchParams.ExchangeUserName, SynchParams.ExchangePassword);
             msgCallback("Found {0} events in the Outlook calendar", eventsInExchange.Count);
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();

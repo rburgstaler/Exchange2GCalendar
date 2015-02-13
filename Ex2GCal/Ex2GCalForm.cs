@@ -240,9 +240,10 @@ namespace Ex2GCal
                 });
         }
 
+        SynchParams par = new SynchParams();
         private void PerformSynch()
         {
-            Synch.PerformSynch(ThreadMsg, tbClientID.Text, tbClientSecret.Text, tbCalendar.Text, tbExchangeURL.Text, tbExchangeUserName.Text, tbExchangePassword.Text);
+            Synch.PerformSynch(ThreadMsg, par);
             //We are done so enable the synch button
             ThreadProc(
                 delegate()
@@ -255,6 +256,12 @@ namespace Ex2GCal
 
         private void btSynch_Click(object sender, EventArgs e)
         {
+            par.GoogleClientID = tbClientID.Text;
+            par.GoogleClientSecret = tbClientSecret.Text;
+            par.GoogleCalendar = tbCalendar.Text;
+            par.ExchangeURL = tbExchangeURL.Text;
+            par.ExchangeUserName = tbExchangeUserName.Text;
+            par.ExchangePassword = tbExchangePassword.Text;
             Thread thd = new Thread(new ThreadStart(PerformSynch));
             btSynch.Enabled = false;
             thd.Start();
