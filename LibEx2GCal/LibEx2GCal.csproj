@@ -97,6 +97,7 @@
     <Compile Include="CalendarManagerExchange.cs" />
     <Compile Include="CalendarManagerGoogle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Synch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
