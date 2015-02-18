@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +13,52 @@ namespace LibEx2GCal
 
     public class SynchParams
     {
+        public SynchParams()
+        {
+            GoogleClientID = "";
+            GoogleClientSecret = "";
+            GoogleCalendar = "";
+            ExchangeURL = "";
+            ExchangeUserName = "";
+            ExchangePassword = "";
+        }
         public String GoogleClientID { get; set; }
         public String GoogleClientSecret { get; set; }
         public String GoogleCalendar { get; set; }
         public String ExchangeURL { get; set; }
         public String ExchangeUserName { get; set; }
         public String ExchangePassword { get; set; }
+
+        static String DefaultConfigPath = "Ex2GCal.json";
+
+        public void Load()
+        {
+            if (File.Exists(DefaultConfigPath))
+            {
+                JObject jsObj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(DefaultConfigPath));
+                GoogleClientID = (string)(jsObj["client_id"] ?? "");
+                GoogleClientSecret = (string)(jsObj["client_secret"] ?? "");
+                GoogleCalendar = (string)(jsObj["calendar"] ?? "");
+
+                ExchangeUserName = (string)(jsObj["ExchangeUserName"] ?? "");
+                ExchangePassword = (string)(jsObj["ExchangePassword"] ?? "");
+                ExchangeURL = (string)(jsObj["ExchangeURL"] ?? "");
+            }
+        }
+
+        public void Save()
+        {
+            JObject jsObj = new JObject();
+            jsObj["client_id"] = GoogleClientID;
+            jsObj["client_secret"] = GoogleClientSecret;
+            jsObj["calendar"] = GoogleCalendar;
+            jsObj["ExchangeUserName"] = ExchangeUserName;
+            jsObj["ExchangePassword"] = ExchangePassword;
+            jsObj["ExchangeURL"] = ExchangeURL;
+
+            String ser = JsonConvert.SerializeObject(jsObj, Formatting.Indented);
+            File.WriteAllText(DefaultConfigPath, ser);
+        }
     }
 
     public class Synch

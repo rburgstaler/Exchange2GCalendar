@@ -129,39 +129,9 @@ namespace Ex2GCal
             }
         }
 
-        private String ConfigPath()
-        {
-            return "Ex2GCal.json";
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-            if (File.Exists(ConfigPath()))
-            {
-                JObject jsObj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(ConfigPath()));
-                tbClientID.Text = (string)(jsObj["client_id"] ?? "");
-                tbClientSecret.Text = (string)(jsObj["client_secret"] ?? "");
-                tbCalendar.Text = (string)(jsObj["calendar"] ?? "");
-
-                tbExchangeUserName.Text = (string)(jsObj["ExchangeUserName"] ?? "");
-                tbExchangePassword.Text = (string)(jsObj["ExchangePassword"] ?? "");
-                tbExchangeURL.Text = (string)(jsObj["ExchangeURL"] ?? "");
-            }
-        }
-
         private void btSaveGoogle_Click(object sender, EventArgs e)
         {
-            JObject jsObj = new JObject();
-            jsObj["client_id"] = tbClientID.Text;
-            jsObj["client_secret"] = tbClientSecret.Text;
-            jsObj["calendar"] = tbCalendar.Text;
-            jsObj["ExchangeUserName"] = tbExchangeUserName.Text;
-            jsObj["ExchangePassword"] = tbExchangePassword.Text;
-            jsObj["ExchangeURL"] = tbExchangeURL.Text;
-
-            String ser = JsonConvert.SerializeObject(jsObj, Formatting.Indented);
-            File.WriteAllText(ConfigPath(), ser);
+            par.Save();
         }
 
         private void btFindCalendars_Click(object sender, EventArgs e)
@@ -256,15 +226,41 @@ namespace Ex2GCal
 
         private void btSynch_Click(object sender, EventArgs e)
         {
+            Thread thd = new Thread(new ThreadStart(PerformSynch));
+            btSynch.Enabled = false;
+            thd.Start();
+        }
+
+        bool ignoreParam_TextChanged = false;
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            par.Load();
+            ignoreParam_TextChanged = true;
+            try
+            {
+                tbClientID.Text = par.GoogleClientID;
+                tbClientSecret.Text = par.GoogleClientSecret;
+                tbCalendar.Text = par.GoogleCalendar;
+
+                tbExchangeUserName.Text = par.ExchangeUserName;
+                tbExchangePassword.Text = par.ExchangePassword;
+                tbExchangeURL.Text = par.ExchangeURL;
+            }
+            finally
+            {
+                ignoreParam_TextChanged = false;
+            }
+        }
+
+        private void Param_TextChanged(object sender, EventArgs e)
+        {
+            if (ignoreParam_TextChanged) return;
             par.GoogleClientID = tbClientID.Text;
             par.GoogleClientSecret = tbClientSecret.Text;
             par.GoogleCalendar = tbCalendar.Text;
             par.ExchangeURL = tbExchangeURL.Text;
             par.ExchangeUserName = tbExchangeUserName.Text;
-            par.ExchangePassword = tbExchangePassword.Text;
-            Thread thd = new Thread(new ThreadStart(PerformSynch));
-            btSynch.Enabled = false;
-            thd.Start();
+            par.ExchangePassword = tbExchangePassword.Text; 
         }
 
     }

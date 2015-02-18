@@ -150,6 +150,7 @@
             this.tbCalendar.Name = "tbCalendar";
             this.tbCalendar.Size = new System.Drawing.Size(382, 20);
             this.tbCalendar.TabIndex = 4;
+            this.tbCalendar.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // label2
             // 
@@ -166,6 +167,7 @@
             this.tbClientSecret.Name = "tbClientSecret";
             this.tbClientSecret.Size = new System.Drawing.Size(382, 20);
             this.tbClientSecret.TabIndex = 2;
+            this.tbClientSecret.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // label1
             // 
@@ -182,6 +184,7 @@
             this.tbClientID.Name = "tbClientID";
             this.tbClientID.Size = new System.Drawing.Size(382, 20);
             this.tbClientID.TabIndex = 0;
+            this.tbClientID.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // btSynch
             // 
@@ -223,6 +226,7 @@
             this.tbExchangeURL.Name = "tbExchangeURL";
             this.tbExchangeURL.Size = new System.Drawing.Size(382, 20);
             this.tbExchangeURL.TabIndex = 4;
+            this.tbExchangeURL.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // label5
             // 
@@ -240,6 +244,7 @@
             this.tbExchangePassword.PasswordChar = '*';
             this.tbExchangePassword.Size = new System.Drawing.Size(382, 20);
             this.tbExchangePassword.TabIndex = 2;
+            this.tbExchangePassword.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // label6
             // 
@@ -256,6 +261,7 @@
             this.tbExchangeUserName.Name = "tbExchangeUserName";
             this.tbExchangeUserName.Size = new System.Drawing.Size(382, 20);
             this.tbExchangeUserName.TabIndex = 0;
+            this.tbExchangeUserName.TextChanged += new System.EventHandler(this.Param_TextChanged);
             // 
             // Ex2GCalForm
             // 
