@@ -53,49 +53,6 @@ namespace Ex2GCal
             return new CalendarService(initializer);
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = "";
-            CalendarService service = GetGoogleCalendarService();
-
-            // Fetch the list of calendar list
-            IList<CalendarListEntry> list = service.CalendarList.List().Execute().Items;
-
-            // Display all calendars
-            DisplayList(list);
-            foreach (CalendarListEntry calendar in list)
-            {
-                // Display calendar's events
-                DisplayFirstCalendarEvents(service, calendar);
-
-                
-            }
-
-            Event entry = new Event();
-
-            entry.Summary = "Event Summary";
-            entry.Description = "This event description";
-            //entry. = cEvent.Body;
-
-            entry.ExtendedProperties = new Event.ExtendedPropertiesData();
-            entry.ExtendedProperties.Private = new Dictionary<string, string>();
-            entry.ExtendedProperties.Shared = new Dictionary<string, string>();
-            entry.ExtendedProperties.Private["a"] = "1";
-            entry.ExtendedProperties.Shared["b"] = "2";
-
-            entry.Start = new EventDateTime();
-            entry.End = new EventDateTime();
-
-            entry.Start.DateTime = DateTime.Now;
-            entry.End.DateTime = DateTime.Now;
-
-            service.Events.Insert(entry, tbCalendar.Text).Execute();
-
-
-            Msg("Press any key to continue...");
-        }
-
         /// <summary>Displays all calendars.</summary>
         private void DisplayList(IList<CalendarListEntry> list)
         {
