@@ -35,18 +35,32 @@ namespace LibEx2GCal
             return String.Format("{0} {1} {2} {3} {4} {5}", id, StartDate, EndDate, Location, Subject, Body);
         }
 
+        static string EncodeId(String DecodedStr)
+        {
+            //Remove invalid id characters
+            //FYI: We must replace the invalid characters with unique strings (not "")
+            //because it was experienced that the differene between two id's can
+            //be as simple as 12abdef3+3133/ee vs. 12abdef3/3133/ee  See the difference???
+            string id = DecodedStr; 
+            id = id.Replace("/", "_plus_");
+            id = id.Replace("+", "_dash_");
+            return id;
+        }
+
+        static public string DecodeId(String EncodedStr)
+        {
+            string id = EncodedStr;
+            id = id.Replace("_plus_", "/");
+            id = id.Replace("_dash_", "+");
+            return id;
+        }
+
         public string Id
         {
             get { return id; }
             set 
             {
-                id = NonNullTrimmed(value);
-                //Remove invalid id characters
-                //FYI: We must replace the invalid characters with unique strings (not "")
-                //because it was experienced that the differene between two id's can
-                //be as simple as 12abdef3+3133/ee vs. 12abdef3/3133/ee  See the difference???
-                id = id.Replace("/", "_plus_");
-                id = id.Replace("+", "_dash_");
+                id = EncodeId(NonNullTrimmed(value));
             }
         }
 
