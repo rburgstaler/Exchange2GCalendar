@@ -89,7 +89,7 @@ namespace LibEx2GCal
 
                 if (searchEvent == null)
                 {   // -> create a new event
-                    msgCallback("Creating event \"{0}\", {1]", cEvent.Subject, cEvent.StartDate);
+                    msgCallback("Creating event \"{0}\", {1}", cEvent.Subject, cEvent.StartDate);
                     gManager.CreateEvent(cEvent);
                 }
                 else if (cEvent.IsChanged(searchEvent))
