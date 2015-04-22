@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using Microsoft.Exchange.WebServices.Data;
+using System.Security.Cryptography;
 
 namespace LibEx2GCal
 {
@@ -100,6 +101,21 @@ namespace LibEx2GCal
 
         public ExchangeStatus Status = null;
 
+        private String MD5(String srcString)
+        {
+            //Create a byte array from source data.
+            byte[] tmpSource = ASCIIEncoding.ASCII.GetBytes(srcString);
+            byte[] tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+            // and then convert tmpHash to string...
+            // string representation (similar to UNIX format)
+            string encoded = BitConverter.ToString(tmpHash)
+               // without dashes
+               .Replace("-", string.Empty)
+               // make lowercase
+               .ToLower();
+            return encoded;
+        }
+
         public List<CalendarEvent> GetAllEvents(String exchangeurl, String user, String pass)
         {
             List<CalendarEvent> events = new List<CalendarEvent>();
@@ -164,7 +180,7 @@ namespace LibEx2GCal
             service.LoadPropertiesForItems(appointments, cView.PropertySet);
             foreach (Appointment a in appointments)
             {
-                cEvent = new CalendarEvent(a.Id.ToString(), a.Start, a.End, a.Location, a.Subject, a.Body);
+                cEvent = new CalendarEvent(MD5(a.Id.ToString()), a.Start, a.End, a.Location, a.Subject, a.Body);
                 events.Add(cEvent);
             }
          
