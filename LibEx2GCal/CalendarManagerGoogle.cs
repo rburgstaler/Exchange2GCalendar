@@ -172,7 +172,10 @@ namespace LibEx2GCal
             {
                 throw new Exception("DeleteEvent: Found more then one event with the given id.");
             }
-
+            else
+            {
+                throw new Exception("DeleteEvent: Did not find any events with the given id of "+id);
+            }
         }
 
         /// <summary>
