@@ -90,6 +90,13 @@ namespace LibEx2GCal
             return (other.Id == this.Id);
         }
 
+        //Limit the max length of a string
+        public string TruncateString(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
+
         /// <summary>
         /// Compare 2 event objects and return true if they differ in one or more attribute values
         /// </summary>
@@ -100,7 +107,8 @@ namespace LibEx2GCal
 
 
                 return (
-                    other.body.Replace("\r", "").Trim('\n').Trim() != this.Body.Replace("\r", "").Trim('\n').Trim()
+                    //Google has a max length for the body and everything beyond will get cut off.  Because of this we say they are equal if the first non truncated bytes are equal.
+                    TruncateString(other.Body, CalendarGlobals.MaxGoogleCalendarDescriptionFieldLimit) != TruncateString(this.Body, CalendarGlobals.MaxGoogleCalendarDescriptionFieldLimit)  
                     ||
                     other.endDate != this.endDate
                     ||
