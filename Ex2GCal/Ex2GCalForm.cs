@@ -14,9 +14,9 @@ namespace Ex2GCal
 {
     public partial class Ex2GCalForm : Form
     {
-        private void Msg(String AMsg, params Object[] list)
+        private void Msg(String AMsg)
         {
-            textBox1.AppendText(String.Format(AMsg, list) + Environment.NewLine);
+            textBox1.AppendText(AMsg + Environment.NewLine);
         }
         
         public Ex2GCalForm()
@@ -150,12 +150,12 @@ namespace Ex2GCal
         }
 
 
-        private void ThreadMsg(String msg, params Object[] list)
+        private void ThreadMsg(String msg)
         {
             ThreadProc(
                 delegate()
                 {
-                    Msg(msg, list);
+                    Msg(msg);
                 });
         }
 

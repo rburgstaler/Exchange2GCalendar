@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace LibEx2GCal
 {
-    public delegate void ExchangeStatus(String msg, params Object[] list);
+    public delegate void ExchangeStatus(String msg);
 
     class TraceListener : ITraceListener
     {

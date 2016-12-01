@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LibEx2GCal
 {
-    public delegate void SynchMessage(String Msg, params Object[] list);
+    public delegate void SynchMessage(String Msg);
 
     public class SynchParams
     {
@@ -72,13 +72,13 @@ namespace LibEx2GCal
             //List<CalendarEvent> events = CalendarManagerOutlook.GetAllEvents();
             msgCallback("Getting all events from Outlook Calendar");
             List<CalendarEvent> eventsInExchange = (new CalendarManagerExchange() { Status = new ExchangeStatus(msgCallback) }).GetAllEvents(SynchParams.ExchangeURL, SynchParams.ExchangeUserName, SynchParams.ExchangePassword);
-            msgCallback("Found {0} events in the Outlook calendar", eventsInExchange.Count);
+            msgCallback(String.Format("Found {0} events in the Outlook calendar", eventsInExchange.Count));
 
             List<CalendarEvent> eventsInGoogle = gManager.GetAllEvents();
 
             //Error check to make sure we do not need to implement paging
             if (eventsInGoogle.Count == CalendarGlobals.MaxGoogleEntriesToReturn) throw new Exception("Google event feed paging needs to be implemented.");
-            msgCallback("Found {0} events in the google calendar", eventsInGoogle.Count);
+            msgCallback(String.Format("Found {0} events in the google calendar", eventsInGoogle.Count));
 
             CalendarEvent searchEvent;
 
@@ -89,13 +89,13 @@ namespace LibEx2GCal
 
                 if (searchEvent == null)
                 {   // -> create a new event
-                    msgCallback("Creating event \"{0}\", {1}", cEvent.Subject, cEvent.StartDate);
+                    msgCallback(String.Format("Creating event \"{0}\", {1}", cEvent.Subject, cEvent.StartDate));
                     gManager.CreateEvent(cEvent);
                 }
                 else if (cEvent.IsChanged(searchEvent))
                 {
                     // -> update event
-                    msgCallback("Update event \"{0}\", {1} ", cEvent.Subject, cEvent.StartDate);
+                    msgCallback(String.Format("Update event \"{0}\", {1} ", cEvent.Subject, cEvent.StartDate));
                     gManager.UpdateEvent(cEvent);
                 }
 
@@ -110,10 +110,10 @@ namespace LibEx2GCal
 
             }
 
-            msgCallback("Found {0} events needing deletion in google", deleteList.Count);
+            msgCallback(String.Format("Found {0} events needing deletion in google", deleteList.Count));
             foreach (CalendarEvent googleEvent in deleteList)
             {
-                msgCallback("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate);
+                msgCallback(String.Format("Deleting event \"{0}\" {1} ... ", googleEvent.Subject, googleEvent.StartDate));
                 gManager.DeleteEvent(googleEvent.Id);
             }
 
