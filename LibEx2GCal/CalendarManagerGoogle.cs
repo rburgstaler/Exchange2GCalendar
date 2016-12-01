@@ -74,8 +74,8 @@ namespace LibEx2GCal
             entry.Description = cEvent.Body;
 
             entry.ExtendedProperties = new Event.ExtendedPropertiesData();
-            entry.ExtendedProperties.Private = new Dictionary<string, string>();
-            entry.ExtendedProperties.Private[syncExtendedParameterName] = cEvent.Id;
+            entry.ExtendedProperties.Private__ = new Dictionary<string, string>();
+            entry.ExtendedProperties.Private__[syncExtendedParameterName] = cEvent.Id;
 
             entry.Location = cEvent.Location;
 
@@ -217,7 +217,7 @@ namespace LibEx2GCal
                 if ((evt.End != null) && (evt.End.DateTime != null)) cEvent.EndDate = evt.End.DateTime.Value;
 
                 String tmpId = "";
-                if ((evt.ExtendedProperties != null) && (evt.ExtendedProperties.Private != null) && (evt.ExtendedProperties.Private.TryGetValue(syncExtendedParameterName, out tmpId))) cEvent.Id = tmpId;
+                if ((evt.ExtendedProperties != null) && (evt.ExtendedProperties.Private__ != null) && (evt.ExtendedProperties.Private__.TryGetValue(syncExtendedParameterName, out tmpId))) cEvent.Id = tmpId;
                 events.Add(cEvent);
             }
             return events;
